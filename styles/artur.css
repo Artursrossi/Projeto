@@ -173,3 +173,45 @@ form span {
     color: var(--text-grey);
     margin-bottom: 0.5rem;
 }
+
+.productList{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.mainProducts{
+    width: min(80rem, 87%);
+}
+
+.product{
+    border: 5px solid;
+    border-color: rgba(255,255,255,0.04);
+    background-color: #fff;
+    border-radius: 1rem;
+    margin-top: 1.6rem;
+    margin-left: 1.2rem;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.productSelected{
+    border-color: var(--primary-100);
+}
+
+.productTitle{
+    color: var(--text-placeholder);
+    text-align: center;
+    font-size: 2.4rem;
+}
+
+.productImage{
+    width: 16rem!important;
+}
+
+.productButton{
+    width: 90%;
+    height: 4rem;
+    margin-top: 1.2rem;
+    margin-bottom: 0.8rem;
+}
