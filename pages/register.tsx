@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import Link from 'next/link'
 import Router from 'next/router'
 import React, { useState, FormEvent } from 'react';
@@ -155,15 +154,6 @@ export default function Register() {
 
     return (
       <>
-        <Head>
-          <title>Projetinho</title>
-          <meta name="description" content="Projeto desenvolvido por Artur Schincariol Rossi" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" />
-          <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet" />
-        </Head>
         <form className="main" onSubmit={handleRegister}>
             <img src="/react.svg" alt="logo" />
             <input value={userName} onChange={e => setUserName(e.target.value)} className="input" type="text" name="name" placeholder="Nome" />

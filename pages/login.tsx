@@ -1,8 +1,8 @@
-import Head from 'next/head'
 import Link from 'next/link'
 import React, { useState, FormEvent } from 'react';
 import axios from 'axios';
 import Router from 'next/router'
+import { setCookie } from 'nookies';
 
 export default function Login(){
     const [email, setEmail] = useState('');
@@ -32,13 +32,18 @@ export default function Login(){
                 spinner?.classList.add('displayNone')
                 button?.classList.remove('displayNone');
               }
-              else if(res.data == "OK"){
-                Router.push('/create');
+              else if(res.status == 201){
+                setCookie(undefined, 'token', res.data.token, {
+                  maxAge: 60 * 60 * 1, // 1 hour
+                  path: '/',
+                })
+                Router.push('/create')
               }
               else{
                 console.log("Ocorreu um erro")
               }
             })
+            .catch(err => console.log(err))
         }
     }
 
@@ -103,15 +108,6 @@ export default function Login(){
 
     return(
       <>
-        <Head>
-          <title>Projetinho</title>
-          <meta name="description" content="Projeto desenvolvido por Artur Schincariol Rossi" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" />
-          <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet" />
-        </Head>
         <form className="main" onSubmit={handleLogin}>
             <img src="/react.svg" alt="logo" />
             <input value={email} onChange={e => setEmail(e.target.value)} className="input" type="text" name="email" placeholder="Email" />

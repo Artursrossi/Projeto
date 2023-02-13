@@ -215,3 +215,11 @@ form span {
     margin-top: 1.2rem;
     margin-bottom: 0.8rem;
 }
+
+.createLinkSpanError{
+    display: inline-block;
+    color: rgb(211, 66, 66);
+    padding-top: 0.8rem;
+    font-size: 1.4rem;
+    padding-left: 0.8rem
+}

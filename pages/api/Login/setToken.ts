@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { setCookie } from 'nookies'
 
 const prisma = new PrismaClient();
 
@@ -43,10 +42,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
                 },
             })
             .then((token: any) => {
-                setCookie(undefined, 'token', token, {
-                    maxAge: 60 * 60 * 1, // 1 hour
-                });
-                return response.status(201).json('OK')
+                return response.status(201).json(token)
             })
             .catch(err => {return response.status(400).json(err)})
         }
