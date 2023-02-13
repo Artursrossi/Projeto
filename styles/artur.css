@@ -1,0 +1,175 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --primary-100: #8257e5;
+    --primary-200: #6b46c1;
+    --background-100: #202024;
+    --background-200: #121214;
+    --text: #fff;
+    --text-grey: #A0AEC0;
+    --text-placeholder: #474b4c;
+
+    font-size: 62.5%;
+}
+
+body {
+    background-color: var(--background-200);
+    color: var(--text);
+}
+
+body * {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.6rem;
+}
+
+#__next {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+}
+
+.main {
+    width: min(40rem, 87%);
+    margin: auto;
+    background-color: var(--background-100);
+    border-radius: 0.8rem;
+    padding: 3.2rem;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.main img {
+    display: block;
+    margin: auto;
+    width: 100%;
+}
+
+.button{
+    outline: none;
+    background-color: var(--primary-100);
+    height: 5rem;
+    justify-content: center;
+    border-radius: 0.5rem;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    color: var(--text);
+    margin-top: 2.4rem;
+    border-color: rgba(255,255,255,0.04);
+}
+
+.button:hover{
+    background-color: var(--primary-200);
+}
+
+.input {
+    outline: none;
+    background-color: var(--background-200);
+    height: 5rem;
+    border-radius: 0.5rem;
+    border: 1px solid;
+    border-color: rgba(255,255,255,0.04);
+    width: 100%;
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+    margin-top: 0.8rem;
+    color: var(--text);
+}
+
+.input:focus {
+    border-color: var(--primary-100);
+    z-index: 1;
+    box-shadow: 0 0 0 1px var(--primary-100);
+}
+
+::placeholder { 
+    color: var(--text-placeholder);
+    opacity: 1;
+}
+  
+:-ms-input-placeholder { 
+    color: var(--text-placeholder);
+}
+  
+::-ms-input-placeholder {
+    color: var(--text-placeholder);
+}
+
+.formAlreadyAccount {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.6rem;
+}
+
+.formAlreadyAccountLink {
+    padding-left: 1rem;
+    text-decoration: none;
+    color: var(--primary-200);
+}
+
+.formAlreadyAccountLink:hover{
+    color: var(--primary-100);
+}
+
+form span {
+    display: inline-block;
+    color: rgb(211, 66, 66);
+    padding-top: 0.8rem;
+    font-size: 1.4rem;
+    padding-left: 0.8rem
+}
+
+.displayNone {
+    display: none!important;
+}
+
+/* SPINNER */
+.spinner {
+    position: relative;
+    height:5rem;
+    width:5rem;
+    top:0rem;
+    margin:0px auto;
+    -webkit-animation: rotation .6s infinite linear;
+    -moz-animation: rotation .6s infinite linear;
+    -o-animation: rotation .6s infinite linear;
+    animation: rotation .6s infinite linear;
+    border-left:0.6rem solid rgba(0,174,239,.15);
+    border-right:0.6rem solid rgba(0,174,239,.15);
+    border-bottom:0.6rem solid rgba(0,174,239,.15);
+    border-top:0.6rem solid rgba(0,174,239,.8);
+    border-radius:100%;
+}
+ 
+@-webkit-keyframes rotation {
+    from {-webkit-transform: rotate(0deg);}
+    to {-webkit-transform: rotate(359deg);}
+}
+@-moz-keyframes rotation {
+    from {-moz-transform: rotate(0deg);}
+    to {-moz-transform: rotate(359deg);}
+}
+@-o-keyframes rotation {
+    from {-o-transform: rotate(0deg);}
+    to {-o-transform: rotate(359deg);}
+}
+@keyframes rotation {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(359deg);}
+}
+
+.span{
+    text-align: center;
+    font-size: 2rem;
+    color: var(--text-grey);
+    margin-bottom: 0.5rem;
+}
