@@ -19,7 +19,7 @@ export default function Create(ProductsInDB: any) {
         const { 'token': token } = parseCookies();
         await axios.post('/api/Create', { token, link, ProductsArray })
         .then(() => {
-          Router.push('/user/'+link)
+          Router.push('/users/'+ link)
         })
         .catch(err => console.log(err))
       }
@@ -112,6 +112,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       ctx.res.writeHead(302, { Location: '/login' });
       ctx.res.end();
     }
+
+    await axios.post('http://localhost:3000/api/getLinkFromToken', { token })
+    .then(res => {if(res.status == 200){
+      ctx.res.writeHead(302, { Location: '/users/' + res.data });
+      ctx.res.end();
+    }})
+    .catch(err => console.log(err))
 
     const res = await axios.get('http://localhost:3000/api/getProductsDB')
     const data = res.data;

@@ -32,11 +32,10 @@ export const getStaticPaths = async () => {
     }
 }
 
-export async function getStaticProps(){
-    const res = await axios.get('http://localhost:3000/api/getLinksDB')
-    const data = res.data;
-
-    var Allproducts = data[0].productsIDs;
+export async function getStaticProps(context: any){
+    const link = context.params.users;
+    var ResAllproducts = await axios.post('http://localhost:3000/api/getProductsFromLink', { link })
+    var Allproducts = ResAllproducts.data.productsIDs;
     var ArrProducts = Allproducts.split(',').map(Number);
 
     var ResProductsData = await axios.post('http://localhost:3000/api/getUserProductsFromIDs', { ArrProducts })
@@ -46,71 +45,3 @@ export async function getStaticProps(){
         props: { ProductsData }
     }
 }
-
-/*
-
-export async function getStaticProps(context: any){
-    const users = context.params.users;
-
-    return{
-        props: {
-            users: users
-        }
-    }
-}
-
-
-async function AdicionarCadaProdutoDoUsuarioEmTela(item: any){
-    try{
-        let res = await axios.post('/api/GetProductsNames', { item });
-
-        console.log(res.data);
-
-        const para = document.createElement("p");
-        para.id = "1";
-        const node = document.createTextNode(res.data.name);
-        para.appendChild(node);
-
-        const element = document.getElementById("ProductListID");
-        element.appendChild(para);
-    }
-    catch{
-        console.log("Axios Error [users.tsx]");
-    }
-}
-
-
-
-async function PegarProdutosDoUsuario(context){
-    const thisURL = context.users;
-    try{
-        let res = await axios.post('/api/GetProductsFromLinks', { thisURL });
-        //var array = JSON.parse(res.data.productsIDs);
-
-        var ArrayInString = res.data.productsIDs;
-        var array = ArrayInString.split(',').map(Number);
-    }
-    catch{
-        console.log("Axios Error [users.tsx]");
-    }
-    
-    if(array){
-        array.forEach(AdicionarCadaProdutoDoUsuarioEmTela);
-    }
-}
-
-function Details(context){
-    //PegarProdutosDoUsuario(context);
-
-    return(
-        <div>
-            <h1>Details Page</h1>
-            <ul id="ProductListID" className="ProductList"></ul>
-        </div>
-    );
-}
-
-export default Details;
-
-*/
-
