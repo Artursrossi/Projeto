@@ -10,18 +10,34 @@ type ProductsType = {
     icon: string;
 }
 
-export default function Create(ProductsInDB: any) {
+interface ResponseJSON {
+  data: Array<ProductsType>
+}
+
+export default function Create(ProductsInDB: ResponseJSON) {
     const [ProductsArray, setProductsArray] = useState<number[]>([]);
     const [link, setLink] = useState('');
 
     async function CreateList(){
-      if(VerifyData() == true){
-        const { 'token': token } = parseCookies();
-        await axios.post('/api/Create', { token, link, ProductsArray })
-        .then(() => {
-          Router.push('/users/'+ link)
-        })
-        .catch(err => console.log(err))
+      if(VerifyData()){
+        let productListErrorID = document.getElementById('productListError') as HTMLElement;
+        if(ProductsArray.length === 0){
+          productListErrorID.innerHTML = "Você deve escolher algum produto";
+        }
+        else{
+          productListErrorID.innerHTML = "";
+          let spinner = document.getElementById('loadingSpinner') as HTMLElement;
+          let button = document.getElementById('loadingButton') as HTMLElement;
+          spinner?.classList.remove('displayNone');
+          button?.classList.add('displayNone');
+  
+          const { 'token': token } = parseCookies();
+          await axios.post('/api/Create', { token, link, ProductsArray })
+          .then(() => {
+            Router.push('/users/'+ link)
+          })
+          .catch(err => console.log(err))
+        }
       }
     }
 
@@ -90,7 +106,7 @@ export default function Create(ProductsInDB: any) {
             <span id="createLinkError" className="createLinkSpanError" />
         </div>
         <div className="productList">
-          {ProductsInDB.data.map((product: any) => {
+          {ProductsInDB.data.map((product: ProductsType) => {
             return <div key={product.id} id={"product-" + product.id} className="product">
               <h1 className="productTitle">{product.name}</h1>
               <img className="productImage" alt="imagem" src={product.icon}></img>
@@ -99,7 +115,9 @@ export default function Create(ProductsInDB: any) {
             </div>
           })}
         </div>
+        <span id="productListError" className="createLinkSpanError" />
         <button id="loadingButton" className="button" onClick={CreateList}>CRIAR LISTA</button>
+        <div id="loadingSpinner" className="spinner displayNone"></div>
       </main>
     </>
   )

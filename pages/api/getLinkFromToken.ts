@@ -15,12 +15,17 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
             email: true
         },
     })
-    .then((data: any) => {
-        checkEmailLink(data.email)
+    .then((data) => {
+        if(data){
+            checkEmailLink(data.email)
+        }
+        else{
+            return response.status(200).json('InvalidToken');
+        }
     })
     .catch(err => {return response.status(400).json(err)}) 
 
-    //find if email has link
+    //check if email has a link
     async function checkEmailLink(email: string){
         let hasLink = await prisma.links.findUnique({
             where: {

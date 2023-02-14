@@ -18,7 +18,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         })
         .then((hash) => {
             if(hash){
-                LogIn(hash);
+                LogIn(hash.pass);
             }
             else{
                 return response.status(200).json('InvalidEmail');
@@ -30,8 +30,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         return response.status(200).json('VerifyDataError');
     }
 
-    async function LogIn(hash: any){
-        const validPassword = await bcrypt.compareSync(pass, hash.pass);
+    async function LogIn(hash: string){
+        const validPassword = await bcrypt.compareSync(pass, hash);
         if(validPassword){
             await prisma.user.findUnique({
                 where: {
@@ -41,7 +41,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
                     token: true
                 },
             })
-            .then((token: any) => {
+            .then((token) => {
                 return response.status(201).json(token)
             })
             .catch(err => {return response.status(400).json(err)})

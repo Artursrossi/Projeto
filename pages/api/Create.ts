@@ -6,11 +6,7 @@ const prisma = new PrismaClient();
 export default async (request: NextApiRequest, response: NextApiResponse) => {
     const { token, link,  ProductsArray } = request.body;
 
-    console.log(token)
-    console.log(link)
-
    const productsArrayInString = ProductsArray.toString();
-
    
     await prisma.user.findUnique({
         where: {
