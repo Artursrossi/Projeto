@@ -7,20 +7,34 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
   const { ArrProducts } = request.body;
   const DataProducts: Array<{name:string; icon:string;} | null> = [];
   
-  for(var id of ArrProducts){
-    await prisma.produtos.findUnique({
-        where: {
-        id: id,
-        },
-        select: {
-        name: true,
-        icon: true
-        },
-    })
-    .then(data => {
-        DataProducts.push(data);
-    })
-    .catch(err => {return response.status(400).json(err)}) 
+  if(VerifyData()){
+    for(var id of ArrProducts){
+      await prisma.produtos.findUnique({
+          where: {
+          id: id,
+          },
+          select: {
+          name: true,
+          icon: true
+          },
+      })
+      .then(data => {
+          DataProducts.push(data);
+      })
+      .catch(err => {return response.status(400).json(err)}) 
+    }
+    return response.status(201).json(DataProducts)
   }
-  return response.status(201).json(DataProducts)
+  else{
+    return response.status(200).json('VerifyDataError');
+  }
+
+  function VerifyData(){
+    if(ArrProducts){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 }

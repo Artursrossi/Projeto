@@ -26,10 +26,7 @@ export default function CreateList(ProductsInDB: ResponseJSON) {
         }
         else{
           productListErrorID.innerHTML = "";
-          let spinner = document.getElementById('loadingSpinner') as HTMLElement;
-          let button = document.getElementById('loadingButton') as HTMLElement;
-          spinner?.classList.remove('displayNone');
-          button?.classList.add('displayNone');
+          AddLoadingAnimation();
   
           const { 'token': token } = parseCookies();
           await axios.post('/api/create-list', { token, link, ProductsArray })
@@ -37,8 +34,7 @@ export default function CreateList(ProductsInDB: ResponseJSON) {
             if(res.data == "LinkAlreadyExists"){
               let createLinkErrorID= document.getElementById('createLinkError') as HTMLElement;
               createLinkErrorID.innerHTML = "Link Já Existente";
-              button?.classList.remove("displayNone");
-              spinner?.classList.add("displayNone"); 
+              RemoveLoadingAnimation();
             }
             else{
               Router.push('/users/'+ link)
@@ -71,6 +67,22 @@ export default function CreateList(ProductsInDB: ResponseJSON) {
       buttonRemoveID.classList.add('displayNone');
       
       setProductsArray(ProductsArray.filter(items => items != id))
+    }
+
+    function AddLoadingAnimation(){
+      let LoadingSpinnerID = document.getElementById('loadingSpinner') as HTMLElement;
+      let LoadingButtonID = document.getElementById('loadingButton') as HTMLElement;
+
+      LoadingSpinnerID?.classList.remove('displayNone');
+      LoadingButtonID?.classList.add('displayNone');
+    }
+
+    function RemoveLoadingAnimation(){
+      let LoadingSpinnerID = document.getElementById('loadingSpinner') as HTMLElement;
+      let LoadingButtonID = document.getElementById('loadingButton') as HTMLElement;
+
+      LoadingSpinnerID?.classList.add('displayNone');
+      LoadingButtonID?.classList.remove('displayNone');
     }
 
     function VerifyData(){

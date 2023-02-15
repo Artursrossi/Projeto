@@ -9,19 +9,21 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
    const productsArrayInString: string = ProductsArray.toString();
    
     if(VerifyData()){
-        //verify if this link already exists
+        //verify if link already exists
         await prisma.links.findUnique({
             where: {
               link: link,
             },
         })
         .then(checkLink => {
+            console.log(checkLink)
             if(!checkLink){
                 CheckEmail();
             }
             else{
                 return response.status(200).json('LinkAlreadyExists');
             }})
+        .catch(err => {return response.status(400).json(err)})
     }
     else{
         return response.status(200).json('VerifyDataError');
@@ -60,6 +62,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     }
 
     function VerifyData(){
+        // token, link, ProductsArray, link == onlyLetters, 3>=link>=20
         var onlyLetters = /^[A-Za-z]+$/;
         if(token && link && ProductsArray && onlyLetters.test(link) == true && link.length >= 3 && link.length <= 20){
             return true;

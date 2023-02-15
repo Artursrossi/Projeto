@@ -12,19 +12,14 @@ export default function Register() {
     async function handleRegister(event: FormEvent){
       event.preventDefault();
       if(VerifyData()){
-        //loading animation
-        let spinner = document.getElementById('loadingSpinner') as HTMLElement;
-        spinner?.classList.remove('displayNone');
-        let button = document.getElementById('loadingButton') as HTMLElement;
-        button?.classList.add('displayNone');
+        AddLoadingAnimation();
 
         await axios.post('/api/Register', { userName, email, pass, samepass })
         .then(res => {
           if(res.data == "EmailAlreadyExist"){
             let formEmailErrorID= document.getElementById('formEmailError') as HTMLElement;
             formEmailErrorID.innerHTML = "Email Já Existente";
-            button?.classList.remove("displayNone");
-            spinner?.classList.add("displayNone"); 
+            RemoveLoadingAnimation();
           }
           else if(res.data == "OK"){
             Router.push('/login');
@@ -35,6 +30,22 @@ export default function Register() {
         })
         .catch(err => console.log(err))
       }
+    }
+
+    function AddLoadingAnimation(){
+      let LoadingSpinnerID = document.getElementById('loadingSpinner') as HTMLElement;
+      let LoadingButtonID = document.getElementById('loadingButton') as HTMLElement;
+
+      LoadingSpinnerID?.classList.remove('displayNone');
+      LoadingButtonID?.classList.add('displayNone');
+    }
+
+    function RemoveLoadingAnimation(){
+      let LoadingSpinnerID = document.getElementById('loadingSpinner') as HTMLElement;
+      let LoadingButtonID = document.getElementById('loadingButton') as HTMLElement;
+
+      LoadingSpinnerID?.classList.add('displayNone');
+      LoadingButtonID?.classList.remove('displayNone');
     }
 
     function VerifyData(){

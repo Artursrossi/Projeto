@@ -43,25 +43,11 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     }
 
     function VerifyData(){
-        if(userName && email && pass && samepass){
-            var re = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
-            if(re.test(email) == true){
-                var OnlyLetters = /^[A-Za-z]+$/;
-                if(OnlyLetters.test(userName) == true){
-                    if(pass == samepass){
-                        return true;
-                    }
-                    else{
-                        return false;
-                    }
-                }
-                else{
-                    return false;
-                }
-            }
-            else{
-                return false;
-            }
+        // userName, email, pass, samepass, email == ReGex, userName == onlyLetters, pass == samepass
+        let ReGex = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+        let onlyLetters = /^[A-Za-z]+$/;
+        if(userName && email && pass && samepass && ReGex.test(email) == true && onlyLetters.test(userName) == true && pass == samepass){
+            return true
         }
         else{
             return false;

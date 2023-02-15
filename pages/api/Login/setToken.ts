@@ -52,11 +52,13 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     }
 
     function verifyData(){
-        if(email && pass){
-            var regex = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
-            if(regex.test(email) == true){
-                return true;
-            }
+        // email, pass, email == RegEx
+        let ReGex = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+        if(email && pass && ReGex.test(email) == true){
+            return true;
+        }
+        else{
+            return false;
         }
     }
 }

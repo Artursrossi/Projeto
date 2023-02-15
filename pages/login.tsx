@@ -11,11 +11,7 @@ export default function Login(){
     async function handleLogin(event: FormEvent){
         event.preventDefault();
         if(VerifyData()){
-            //loading animation
-            let spinner = document.getElementById('loadingSpinner') as HTMLElement;
-            let button = document.getElementById('loadingButton') as HTMLElement;
-            spinner?.classList.remove('displayNone');
-            button?.classList.add('displayNone');
+            AddLoadingAnimation();
 
             let formPassErrorID = document.getElementById('formPassError') as HTMLElement;
             let formEmailErrorID = document.getElementById('formEmailError') as HTMLElement;
@@ -24,20 +20,18 @@ export default function Login(){
             .then(res => {
               if(res.data == "InvalidEmail"){
                 formEmailErrorID.innerHTML = "Email Incorreto";
-                spinner?.classList.add('displayNone')
-                button?.classList.remove('displayNone');
+                RemoveLoadingAnimation();
               }
               else if(res.data == "InvalidPass"){
                 formPassErrorID.innerHTML = "Senha Incorreta";
-                spinner?.classList.add('displayNone')
-                button?.classList.remove('displayNone');
+                RemoveLoadingAnimation();
               }
               else if(res.status == 201){
                 setCookie(undefined, 'token', res.data.token, {
                   maxAge: 60 * 60 * 1, // 1 hour
                   path: '/',
                 })
-                checkHasLink(res.data.token);
+                Redirect(res.data.token);
               }
               else{
                 console.log("Ocorreu um erro")
@@ -47,7 +41,7 @@ export default function Login(){
         }
     }
 
-    async function checkHasLink(token: string){
+    async function Redirect(token: string){
       try{
         const resHasLink =  await axios.post('http://localhost:3000/api/getLinkFromToken', { token })
         if(resHasLink.status == 201){
@@ -60,6 +54,22 @@ export default function Login(){
       catch(err){
         console.log(err)
       }
+    }
+
+    function AddLoadingAnimation(){
+      let LoadingSpinnerID = document.getElementById('loadingSpinner') as HTMLElement;
+      let LoadingButtonID = document.getElementById('loadingButton') as HTMLElement;
+
+      LoadingSpinnerID?.classList.remove('displayNone');
+      LoadingButtonID?.classList.add('displayNone');
+    }
+
+    function RemoveLoadingAnimation(){
+      let LoadingSpinnerID = document.getElementById('loadingSpinner') as HTMLElement;
+      let LoadingButtonID = document.getElementById('loadingButton') as HTMLElement;
+
+      LoadingSpinnerID?.classList.add('displayNone');
+      LoadingButtonID?.classList.remove('displayNone');
     }
 
     function VerifyData(){

@@ -31,10 +31,7 @@ export default function EditList(data: BigData) {
         }
         else{
             productListErrorID.innerHTML = "";
-            let spinner = document.getElementById('loadingSpinner') as HTMLElement;
-            let button = document.getElementById('loadingButton') as HTMLElement;
-            spinner?.classList.remove('displayNone');
-            button?.classList.add('displayNone');
+            AddLoadingAnimation();
 
             const { link } = data;
             await axios.post('/api/edit-list', { link, ProductsArray })
@@ -80,6 +77,22 @@ export default function EditList(data: BigData) {
         buttonRemoveID.classList.add('displayNone');
         
         setProductsArray(ProductsArray.filter(items => items != id))
+      }
+
+      function AddLoadingAnimation(){
+        let LoadingSpinnerID = document.getElementById('loadingSpinner') as HTMLElement;
+        let LoadingButtonID = document.getElementById('loadingButton') as HTMLElement;
+  
+        LoadingSpinnerID?.classList.remove('displayNone');
+        LoadingButtonID?.classList.add('displayNone');
+      }
+  
+      function RemoveLoadingAnimation(){
+        let LoadingSpinnerID = document.getElementById('loadingSpinner') as HTMLElement;
+        let LoadingButtonID = document.getElementById('loadingButton') as HTMLElement;
+  
+        LoadingSpinnerID?.classList.add('displayNone');
+        LoadingButtonID?.classList.remove('displayNone');
       }
 
   return (

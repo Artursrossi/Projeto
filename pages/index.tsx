@@ -7,7 +7,6 @@ export default function Home() {
         <img src="/react.svg" alt="logo" />
         <Link className="button" href="/register">Register</Link>
         <Link className="button" href="/login">Login</Link>
-        <Link className="button" href="/create">Create</Link>
       </main>
     </>
   )
