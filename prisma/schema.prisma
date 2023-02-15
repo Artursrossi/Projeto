@@ -13,7 +13,7 @@ generator client {
 model User {
   id      Int      @default(autoincrement()) @id
   name    String   
-  pass    String   @unique   
+  pass    String   @unique
   email   String   @unique
   token   String   @unique  
 }
@@ -21,12 +21,12 @@ model User {
 model Produtos {
   id      Int      @default(autoincrement()) @id
   name    String   
-  icon    String   @unique   
+  icon    String  @unique
 }
 
 model Links {
   id           Int      @default(autoincrement()) @id
   userEmail    String   @unique  
   link         String   @unique
-  productsIDs  String   @unique     
+  productsIDs  String     
 }

@@ -37,7 +37,7 @@ export default function Login(){
                   maxAge: 60 * 60 * 1, // 1 hour
                   path: '/',
                 })
-                Router.push('/create')
+                checkHasLink(res.data.token);
               }
               else{
                 console.log("Ocorreu um erro")
@@ -45,6 +45,21 @@ export default function Login(){
             })
             .catch(err => console.log(err))
         }
+    }
+
+    async function checkHasLink(token: string){
+      try{
+        const resHasLink =  await axios.post('http://localhost:3000/api/getLinkFromToken', { token })
+        if(resHasLink.status == 201){
+          Router.push('/users/' + resHasLink.data)
+        }
+        else{
+          Router.push('/create-list')
+        }
+      }
+      catch(err){
+        console.log(err)
+      }
     }
 
     function VerifyData(){

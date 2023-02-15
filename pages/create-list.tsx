@@ -14,11 +14,11 @@ interface ResponseJSON {
   data: Array<ProductsType>
 }
 
-export default function Create(ProductsInDB: ResponseJSON) {
+export default function CreateList(ProductsInDB: ResponseJSON) {
     const [ProductsArray, setProductsArray] = useState<number[]>([]);
     const [link, setLink] = useState('');
 
-    async function CreateList(){
+    async function handleCreateList(){
       if(VerifyData()){
         let productListErrorID = document.getElementById('productListError') as HTMLElement;
         if(ProductsArray.length === 0){
@@ -32,9 +32,17 @@ export default function Create(ProductsInDB: ResponseJSON) {
           button?.classList.add('displayNone');
   
           const { 'token': token } = parseCookies();
-          await axios.post('/api/Create', { token, link, ProductsArray })
-          .then(() => {
-            Router.push('/users/'+ link)
+          await axios.post('/api/create-list', { token, link, ProductsArray })
+          .then((res) => {
+            if(res.data == "LinkAlreadyExists"){
+              let createLinkErrorID= document.getElementById('createLinkError') as HTMLElement;
+              createLinkErrorID.innerHTML = "Link Já Existente";
+              button?.classList.remove("displayNone");
+              spinner?.classList.add("displayNone"); 
+            }
+            else{
+              Router.push('/users/'+ link)
+            }
           })
           .catch(err => console.log(err))
         }
@@ -116,7 +124,7 @@ export default function Create(ProductsInDB: ResponseJSON) {
           })}
         </div>
         <span id="productListError" className="createLinkSpanError" />
-        <button id="loadingButton" className="button" onClick={CreateList}>CRIAR LISTA</button>
+        <button id="loadingButton" className="button" onClick={handleCreateList}>CRIAR LISTA</button>
         <div id="loadingSpinner" className="spinner displayNone"></div>
       </main>
     </>
@@ -132,7 +140,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
 
     await axios.post('http://localhost:3000/api/getLinkFromToken', { token })
-    .then(res => {if(res.status == 200){
+    .then(res => {if(res.status == 201){
       ctx.res.writeHead(302, { Location: '/users/' + res.data });
       ctx.res.end();
     }})

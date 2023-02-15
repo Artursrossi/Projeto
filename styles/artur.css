@@ -223,3 +223,8 @@ form span {
     font-size: 1.4rem;
     padding-left: 0.8rem
 }
+
+.isOwner button{
+    margin-top: 0rem;
+    margin-bottom: 1.6rem;
+}

@@ -36,10 +36,10 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
             }
         })
         if(hasLink){
-            return response.status(200).json(hasLink.link)
+            return response.status(201).json(hasLink.link)
         }
         else{
-            return response.status(201).json('OK')
+            return response.status(200).json('OK')
         }
     }
 }

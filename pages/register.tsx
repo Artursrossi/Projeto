@@ -13,9 +13,9 @@ export default function Register() {
       event.preventDefault();
       if(VerifyData()){
         //loading animation
-        let spinner = document.getElementById('loadingSpinner');
+        let spinner = document.getElementById('loadingSpinner') as HTMLElement;
         spinner?.classList.remove('displayNone');
-        let button = document.getElementById('loadingButton');
+        let button = document.getElementById('loadingButton') as HTMLElement;
         button?.classList.add('displayNone');
 
         await axios.post('/api/Register', { userName, email, pass, samepass })
