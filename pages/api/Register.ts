@@ -45,8 +45,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     function VerifyData(){
         // userName, email, pass, samepass, email == ReGex, userName == onlyLetters, pass == samepass
         let ReGex = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
-        let onlyLetters = /^[A-Za-z]+$/;
-        if(userName && email && pass && samepass && ReGex.test(email) == true && onlyLetters.test(userName) == true && pass == samepass){
+        var NameReGex = /^[a-zA-Z ]{3,30}$/;
+        if(userName && email && pass && samepass && ReGex.test(email) == true && NameReGex.test(userName) == true && pass == samepass){
             return true
         }
         else{

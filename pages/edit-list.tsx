@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { parseCookies } from 'nookies';
 import Router from 'next/router'
+import { ProductList } from '@/components/ProductList';
+import { AddLoadingAnimation } from '../utils/AddLoadingAnimation';
+import { Button } from '@/components/Button';
 
 type ProductsType = {
     id: number; 
@@ -18,11 +21,13 @@ interface BigData {
 
 export default function EditList(data: BigData) {
     const [ProductsArray, setProductsArray] = useState<number[]>(data.SelectedProducts);
+    /*
     useEffect(() => {
-        for(let item of ProductsArray){
+        for(var item of ProductsArray){
             initialProducts(item);
         }
     }, [])
+    */
 
     async function handleEditList(){
         let productListErrorID = document.getElementById('productListError') as HTMLElement;
@@ -55,63 +60,21 @@ export default function EditList(data: BigData) {
         buttonRemoveID.classList.remove('displayNone');
     }
 
-    function addProduct(id: number){
-        let productID = document.getElementById('product-'+id) as HTMLElement;
-        productID?.classList.add('productSelected');
-  
-        let buttonAddID = document.getElementById('buttonAdd-'+id) as HTMLElement;
-        let buttonRemoveID = document.getElementById('buttonRemove-'+id) as HTMLElement;
-        buttonAddID.classList.add('displayNone');
-        buttonRemoveID.classList.remove('displayNone');
-  
+      function AddSetProductsArray(id: number){
         setProductsArray([...ProductsArray, id])
       }
   
-      function removeProduct(id: number){
-        let productID = document.getElementById('product-'+id) as HTMLElement;
-        productID?.classList.remove('productSelected');
-  
-        let buttonAddID = document.getElementById('buttonAdd-'+id) as HTMLElement;
-        let buttonRemoveID = document.getElementById('buttonRemove-'+id) as HTMLElement;
-        buttonAddID.classList.remove('displayNone');
-        buttonRemoveID.classList.add('displayNone');
-        
+      function RemoveSetProductsArray(id:number){
         setProductsArray(ProductsArray.filter(items => items != id))
-      }
-
-      function AddLoadingAnimation(){
-        let LoadingSpinnerID = document.getElementById('loadingSpinner') as HTMLElement;
-        let LoadingButtonID = document.getElementById('loadingButton') as HTMLElement;
-  
-        LoadingSpinnerID?.classList.remove('displayNone');
-        LoadingButtonID?.classList.add('displayNone');
-      }
-  
-      function RemoveLoadingAnimation(){
-        let LoadingSpinnerID = document.getElementById('loadingSpinner') as HTMLElement;
-        let LoadingButtonID = document.getElementById('loadingButton') as HTMLElement;
-  
-        LoadingSpinnerID?.classList.add('displayNone');
-        LoadingButtonID?.classList.remove('displayNone');
       }
 
   return (
     <>
       <main className="main mainProducts">
         <img src="/react.svg" alt="logo" />
-        <div className="productList">
-        {data.AllProducts.map((product: ProductsType) => {
-            return <div key={product.id} id={"product-" + product.id} className="product">
-              <h1 className="productTitle">{product.name}</h1>
-              <img className="productImage" alt="imagem" src={product.icon}></img>
-              <button id={"buttonAdd-" + product.id} className="button productButton" onClick={() => {addProduct(product.id)}}>Adicionar</button>
-              <button id={"buttonRemove-" + product.id} className="button productButton displayNone" onClick={() => {removeProduct(product.id)}}>Remover</button>
-            </div>
-          })}
-        </div>
+        <ProductList selectedProducts={data.SelectedProducts} withButton={true} AllProducts={data.AllProducts} AddSetProductsArray={AddSetProductsArray} RemoveSetProductsArray={RemoveSetProductsArray}/>
         <span id="productListError" className="createLinkSpanError" />
-        <button id="loadingButton" className="button" onClick={handleEditList}>SALVAR LISTA</button>
-        <div id="loadingSpinner" className="spinner displayNone"></div>
+        <Button id="loadingButton" additionalClass="" text="SALVAR LISTA" type="button" func={handleEditList}/>
       </main>
     </>
   )

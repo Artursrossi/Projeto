@@ -2,6 +2,9 @@ import Link from 'next/link'
 import Router from 'next/router'
 import React, { useState, FormEvent } from 'react';
 import axios from 'axios';
+import { AddLoadingAnimation } from '../utils/AddLoadingAnimation';
+import { RemoveLoadingAnimation } from '../utils/RemoveLoadingAnimation';
+import { Button } from '@/components/Button';
 
 export default function Register() {
   const [userName, setUserName] = useState('');
@@ -32,22 +35,6 @@ export default function Register() {
       }
     }
 
-    function AddLoadingAnimation(){
-      let LoadingSpinnerID = document.getElementById('loadingSpinner') as HTMLElement;
-      let LoadingButtonID = document.getElementById('loadingButton') as HTMLElement;
-
-      LoadingSpinnerID?.classList.remove('displayNone');
-      LoadingButtonID?.classList.add('displayNone');
-    }
-
-    function RemoveLoadingAnimation(){
-      let LoadingSpinnerID = document.getElementById('loadingSpinner') as HTMLElement;
-      let LoadingButtonID = document.getElementById('loadingButton') as HTMLElement;
-
-      LoadingSpinnerID?.classList.add('displayNone');
-      LoadingButtonID?.classList.remove('displayNone');
-    }
-
     function VerifyData(){
       var validName = false;
       var validPass = false;
@@ -68,10 +55,10 @@ export default function Register() {
       }
       else{
         //verify if name is 5 to 30 digits long
-        if(userName.length >= 5 && userName.length <= 30){
+        if(userName.length >= 3 && userName.length <= 30){
           //verify if the name has only letters
-          var OnlyLetters = /^[A-Za-z]+$/;
-          if(OnlyLetters.test(userName) == true){
+          var NameReGex = /^[a-zA-Z ]{3,30}$/;
+          if(NameReGex.test(userName) == true){
             formNameErrorID.innerHTML = "";
             validName = true;
           }
@@ -81,7 +68,7 @@ export default function Register() {
           }
         }
         else{
-          formNameErrorID.innerHTML = "O seu nome deve ter entre 5 a 30 letras";
+          formNameErrorID.innerHTML = "O seu nome deve ter entre 3 a 30 letras";
           validName = false;
         }
       }
@@ -175,8 +162,7 @@ export default function Register() {
             <span id="formPassError" />
             <input value={samepass} onChange={e => setSamePass(e.target.value)} className="input" type="password" name="senha" placeholder="Repetir Senha" />
             <span id="formSamePassError" />
-            <button id="loadingButton" className="button" type="submit">REGISTRAR</button>
-            <div id="loadingSpinner" className="spinner displayNone"></div>
+            <Button id="loadingButton" additionalClass="" text="REGISTRAR" type="submit" func={() => {}}/>
             <div className="formAlreadyAccount">
               Já tem uma conta?
               <Link className="formAlreadyAccountLink" href="/login">Entrar</Link>

@@ -38,10 +38,9 @@ body * {
     background-color: var(--background-100);
     border-radius: 0.8rem;
     padding: 3.2rem;
-    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
 }
 
 .main img {
@@ -132,41 +131,6 @@ form span {
     display: none!important;
 }
 
-/* SPINNER */
-.spinner {
-    position: relative;
-    height:5rem;
-    width:5rem;
-    top:0.6rem;
-    margin:0px auto;
-    -webkit-animation: rotation .6s infinite linear;
-    -moz-animation: rotation .6s infinite linear;
-    -o-animation: rotation .6s infinite linear;
-    animation: rotation .6s infinite linear;
-    border-left:0.6rem solid rgba(0,174,239,.15);
-    border-right:0.6rem solid rgba(0,174,239,.15);
-    border-bottom:0.6rem solid rgba(0,174,239,.15);
-    border-top:0.6rem solid rgba(0,174,239,.8);
-    border-radius:100%;
-}
- 
-@-webkit-keyframes rotation {
-    from {-webkit-transform: rotate(0deg);}
-    to {-webkit-transform: rotate(359deg);}
-}
-@-moz-keyframes rotation {
-    from {-moz-transform: rotate(0deg);}
-    to {-moz-transform: rotate(359deg);}
-}
-@-o-keyframes rotation {
-    from {-o-transform: rotate(0deg);}
-    to {-o-transform: rotate(359deg);}
-}
-@keyframes rotation {
-    from {transform: rotate(0deg);}
-    to {transform: rotate(359deg);}
-}
-
 .span{
     text-align: center;
     font-size: 2rem;
@@ -180,7 +144,7 @@ form span {
 }
 
 .mainProducts{
-    width: min(80rem, 87%);
+    width: min(100rem, 87%);
 }
 
 .product{
@@ -196,7 +160,7 @@ form span {
 }
 
 .productSelected{
-    border-color: var(--primary-100);
+    border-color: var(--primary-100)!important;
 }
 
 .productTitle{
@@ -224,7 +188,16 @@ form span {
     padding-left: 0.8rem
 }
 
+.isOwner {
+    width: 100%;
+}
+
 .isOwner button{
     margin-top: 0rem;
     margin-bottom: 1.6rem;
+}
+
+.width50{
+    width: 50%!important;
+    margin: 2.4rem auto;
 }

@@ -1,3 +1,5 @@
+import { Button } from '@/components/Button';
+import { ProductList } from '@/components/ProductList';
 import axios from 'axios';
 import { GetStaticProps, GetStaticPaths } from 'next'
 import Router from 'next/router'
@@ -5,8 +7,9 @@ import { parseCookies } from 'nookies';
 import { useState, useEffect } from 'react';
 
 type ProductsType = {
-    name: string; 
-    icon: string;
+    id: number;
+    title: string; 
+    url: string;
 }
 
 interface BigData{
@@ -33,21 +36,20 @@ export default function Users(data: BigData) {
         }
     }
 
+    function handleEdit(){
+        Router.push('/edit-list')
+    }
+
     return(
         <>
-            <div className="main">
+            <div className="main mainProducts">
                 { (isOwner ? 
                 <div className="isOwner">
-                    <button className="button" onClick={() => {Router.push('/edit-list')}}>Editar Lista</button>
+                    <Button id="loadingButton" additionalClass="" text="Editar Lista" type="button" func={handleEdit}/>
                 </div>
                 : <></>) }
                 <h1>Produtos:</h1>
-                {data.ProductsData.map((data: ProductsType) => {
-                    return <div key={data.name} className="product">
-                        <h1 className="productTitle">{data.name}</h1>
-                        <img className="productImage" src={data.icon} alt="imagem" />
-                    </div>
-                })}
+                <ProductList selectedProducts={[]} withButton={false} AllProducts={data.ProductsData} AddSetProductsArray={() => {}} RemoveSetProductsArray={() => {}}/>
             </div>
         </>
     )

@@ -5,25 +5,23 @@ const prisma = new PrismaClient();
 
 export default async (request: NextApiRequest, response: NextApiResponse) => {
   const { ArrProducts } = request.body;
-  const DataProducts: Array<{name:string; icon:string;} | null> = [];
+  const DataProducts: Array<{id:number; title:string; url: string;} | null> = [];
   
-  if(VerifyData()){
+  function filterSelectedProducts(AllProducts: any){
     for(var id of ArrProducts){
-      await prisma.produtos.findUnique({
-          where: {
-          id: id,
-          },
-          select: {
-          name: true,
-          icon: true
-          },
+      let ArrayUnFiltered = AllProducts.filter((item: any) => item.id == id);
+      ArrayUnFiltered.forEach((jsonData:any) => {
+        DataProducts.push(jsonData);
       })
-      .then(data => {
-          DataProducts.push(data);
-      })
-      .catch(err => {return response.status(400).json(err)}) 
     }
     return response.status(201).json(DataProducts)
+  }
+
+  if(VerifyData()){
+    fetch('https://jsonplaceholder.typicode.com/photos')
+    .then(res => res.json())
+    .then(resJSON => {filterSelectedProducts(resJSON)})
+    .catch(err => {return response.status(400).json(err)})
   }
   else{
     return response.status(200).json('VerifyDataError');

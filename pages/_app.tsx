@@ -1,4 +1,4 @@
-import '../styles/artur.css'
+import '../styles/global.css'
 import type { AppProps } from 'next/app'
 import { AuthProvider } from '../contexts/AuthContext'
 import Head from 'next/head'

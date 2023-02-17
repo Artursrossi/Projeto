@@ -3,6 +3,9 @@ import React, { useState, FormEvent } from 'react';
 import axios from 'axios';
 import Router from 'next/router'
 import { setCookie } from 'nookies';
+import { AddLoadingAnimation } from '../utils/AddLoadingAnimation';
+import { RemoveLoadingAnimation } from '../utils/RemoveLoadingAnimation';
+import { Button } from '@/components/Button';
 
 export default function Login(){
     const [email, setEmail] = useState('');
@@ -42,34 +45,16 @@ export default function Login(){
     }
 
     async function Redirect(token: string){
-      try{
-        const resHasLink =  await axios.post('http://localhost:3000/api/getLinkFromToken', { token })
-        if(resHasLink.status == 201){
-          Router.push('/users/' + resHasLink.data)
+      await axios.post('/api/getLinkFromToken', { token })
+      .then((res) => {
+        if(res.status == 201){
+          Router.push('/users/' + res.data)
         }
         else{
           Router.push('/create-list')
         }
-      }
-      catch(err){
-        console.log(err)
-      }
-    }
-
-    function AddLoadingAnimation(){
-      let LoadingSpinnerID = document.getElementById('loadingSpinner') as HTMLElement;
-      let LoadingButtonID = document.getElementById('loadingButton') as HTMLElement;
-
-      LoadingSpinnerID?.classList.remove('displayNone');
-      LoadingButtonID?.classList.add('displayNone');
-    }
-
-    function RemoveLoadingAnimation(){
-      let LoadingSpinnerID = document.getElementById('loadingSpinner') as HTMLElement;
-      let LoadingButtonID = document.getElementById('loadingButton') as HTMLElement;
-
-      LoadingSpinnerID?.classList.add('displayNone');
-      LoadingButtonID?.classList.remove('displayNone');
+      })
+      .catch((err) => console.log(err))
     }
 
     function VerifyData(){
@@ -139,8 +124,7 @@ export default function Login(){
             <span id="formEmailError" />
             <input value={pass} onChange={e => setPass(e.target.value)} className="input" type="password" name="senha" placeholder="Senha" />
             <span id="formPassError" />
-            <button id="loadingButton" className="button" type="submit">ENTRAR</button>
-            <div id="loadingSpinner" className="spinner displayNone"></div>
+            <Button id="loadingButton" additionalClass="" text="ENTRAR" type="submit" func={() => {}}/>
             <div className="formAlreadyAccount">
               Não tem uma conta?
               <Link className="formAlreadyAccountLink" href="/register">Registre-se</Link>

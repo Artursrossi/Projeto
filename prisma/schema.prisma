@@ -18,12 +18,6 @@ model User {
   token   String   @unique  
 }
 
-model Produtos {
-  id      Int      @default(autoincrement()) @id
-  name    String   
-  icon    String  @unique
-}
-
 model Links {
   id           Int      @default(autoincrement()) @id
   userEmail    String   @unique  
