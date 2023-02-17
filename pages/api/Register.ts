@@ -6,7 +6,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 const prisma = new PrismaClient();
 
 export default async (request: NextApiRequest, response: NextApiResponse) => {
-    const { userName, email, pass, samepass } = request.body;
+    const { name, email, pass, samepass } = request.body;
 
     if(VerifyData()){
         await prisma.user.findUnique({
@@ -32,7 +32,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         const hash = await bcrypt.hashSync(pass, 10);
         await prisma.user.create({
             data: {
-                name: userName,
+                name: name,
                 email: email,
                 pass: hash,
                 token: uuid()
@@ -43,10 +43,10 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     }
 
     function VerifyData(){
-        // userName, email, pass, samepass, email == ReGex, userName == onlyLetters, pass == samepass
-        let ReGex = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
-        var NameReGex = /^[a-zA-Z ]{3,30}$/;
-        if(userName && email && pass && samepass && ReGex.test(email) == true && NameReGex.test(userName) == true && pass == samepass){
+        // name, email, pass, samepass, email == ReGex, name == onlyLetters, pass == samepass
+        let ReGexEmail = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+        let ReGexName = /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{3,30}$/;
+        if(name && email && pass && samepass && ReGexEmail.test(email) == true && ReGexName.test(name) == true && pass == samepass){
             return true
         }
         else{

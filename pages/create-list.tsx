@@ -7,6 +7,7 @@ import { ProductList } from '@/components/ProductList';
 import { AddLoadingAnimation } from '../utils/AddLoadingAnimation';
 import { RemoveLoadingAnimation } from '../utils/RemoveLoadingAnimation';
 import { Button } from '@/components/Button';
+import { VerifyInputs } from '../utils/VerifyInputs';
 
 type ProductsType = {
     id: number; 
@@ -23,7 +24,8 @@ export default function CreateList(ProductsInDB: ResponseJSON) {
     const [link, setLink] = useState('');
 
     async function handleCreateList(){
-      if(VerifyData()){
+      let VerifyInputsProps: any = {"validateName":false, "validateEmail":false, "validatePass":false, "validateSamePass":false, "validateLink":true, link}
+      if(VerifyInputs(VerifyInputsProps) === true){
         let productListErrorID = document.getElementById('productListError') as HTMLElement;
         if(ProductsArray.length === 0){
           productListErrorID.innerHTML = "Você deve escolher algum produto";
@@ -46,40 +48,6 @@ export default function CreateList(ProductsInDB: ResponseJSON) {
           })
           .catch(err => console.log(err))
         }
-      }
-    }
-
-    function VerifyData(){
-      let createLinkErrorID = document.getElementById("createLinkError") as HTMLElement;
-
-      //verify if link input has value
-      if(link){
-        createLinkErrorID.innerHTML = "";
-        //verify if link has only letters
-        var onlyLetters = /^[A-Za-z]+$/;
-        if(onlyLetters.test(link) == true){
-          createLinkErrorID.innerHTML = "";
-          //verify if link is 3 to 20 digits long
-          if(link.length >= 3 && link.length <= 20){
-            createLinkErrorID.innerHTML = "";
-            return true;
-          }
-          else{
-            location.href = "#divCreateLink";
-            createLinkErrorID.innerHTML = "O Link deve ter entre 3 a 20 digitos";
-            return false;
-          }
-        }
-        else{
-          location.href = "#divCreateLink";
-          createLinkErrorID.innerHTML = "O Link não pode ter espaço ou caracteres especiais";
-          return false;
-        }
-      }
-      else{
-        location.href = "#divCreateLink";
-        createLinkErrorID.innerHTML = "Link Obrigatório";
-        return false;
       }
     }
 

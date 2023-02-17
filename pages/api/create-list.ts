@@ -63,8 +63,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
     function VerifyData(){
         // token, link, ProductsArray, link == onlyLetters, 3>=link>=20
-        var onlyLetters = /^[A-Za-z]+$/;
-        if(token && link && ProductsArray && onlyLetters.test(link) == true && link.length >= 3 && link.length <= 20){
+        let ReGexLink = /^[A-Za-z]{3,20}$/;
+        if(token && link && ProductsArray && ReGexLink.test(link) == true && link.length >= 3 && link.length <= 20){
             return true;
         }
         else{

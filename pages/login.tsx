@@ -6,21 +6,23 @@ import { setCookie } from 'nookies';
 import { AddLoadingAnimation } from '../utils/AddLoadingAnimation';
 import { RemoveLoadingAnimation } from '../utils/RemoveLoadingAnimation';
 import { Button } from '@/components/Button';
+import { VerifyInputs } from '../utils/VerifyInputs';
 
 export default function Login(){
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
 
     async function handleLogin(event: FormEvent){
-        event.preventDefault();
-        if(VerifyData()){
-            AddLoadingAnimation();
+      event.preventDefault();
+      let VerifyInputsProps: any = {"validateName":false, "validateEmail":true, "validatePass":true, "validateSamePass":false, "validateLink":false, email, pass}
+      if(VerifyInputs(VerifyInputsProps) === true){
+          AddLoadingAnimation();
 
-            let formPassErrorID = document.getElementById('formPassError') as HTMLElement;
-            let formEmailErrorID = document.getElementById('formEmailError') as HTMLElement;
+          let formPassErrorID = document.getElementById('formPassError') as HTMLElement;
+          let formEmailErrorID = document.getElementById('formEmailError') as HTMLElement;
 
-            await axios.post('/api/Login/setToken', { email, pass })
-            .then(res => {
+          await axios.post('/api/Login/setToken', { email, pass })
+          .then(res => {
               if(res.data == "InvalidEmail"){
                 formEmailErrorID.innerHTML = "Email Incorreto";
                 RemoveLoadingAnimation();
@@ -40,8 +42,8 @@ export default function Login(){
                 console.log("Ocorreu um erro")
               }
             })
-            .catch(err => console.log(err))
-        }
+          .catch(err => console.log(err))
+      }
     }
 
     async function Redirect(token: string){
@@ -55,65 +57,6 @@ export default function Login(){
         }
       })
       .catch((err) => console.log(err))
-    }
-
-    function VerifyData(){
-        var validEmail = false;
-        var validPass = false;
-
-        var formPassErrorID = document.getElementById('formPassError') as HTMLElement;
-        var formEmailErrorID = document.getElementById('formEmailError') as HTMLElement;
-    
-        //verify if pass input has value
-        if(!pass){      
-            formPassErrorID.innerHTML = "Senha Obrigatório";
-        }
-        else{
-          //verify if pass is 8 to 30 digits long
-          if(pass.length >= 8 && pass.length <= 30){
-            formPassErrorID.innerHTML = "";
-            //verify if pass has number
-            var strongerPass = /^(?=.*[0-9])[a-zA-Z0-9!@#$%^&*]{8,30}$/;
-            if(strongerPass.test(pass) == true){
-                formPassErrorID.innerHTML = "";
-              validPass = true
-            }
-            else{
-                formPassErrorID.innerHTML = "A sua senha deve conter pelo menos um número";
-              validPass = false
-            }
-          }
-          else{
-            formPassErrorID.innerHTML = "A sua senha deve ter entre 8 a 30 digitos";
-            validPass = false
-          }
-        }
-    
-        //verify if email input has value
-        if(email){
-            formEmailErrorID.innerHTML = "";
-    
-          //verify if email is valid
-          var regex = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
-          if(regex.test(email) == true){
-            formEmailErrorID.innerHTML = "";
-            validEmail = true;
-          }
-          else{
-            formEmailErrorID.innerHTML = "Email Inválido";
-            validEmail = false;
-          } 
-        }
-        else{
-            formEmailErrorID.innerHTML = "Email Obrigatório";
-        }
-    
-        if(validEmail == true && validPass == true){
-          return true;
-        }
-        else{
-          return false;
-        }
     }
 
     return(
