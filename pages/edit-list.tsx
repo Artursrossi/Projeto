@@ -9,8 +9,8 @@ import { Button } from '@/components/Button';
 
 type ProductsType = {
     id: number; 
-    name: string; 
-    icon: string;
+    title: string; 
+    url: string;
 }
 
 interface BigData {
@@ -20,14 +20,8 @@ interface BigData {
 }
 
 export default function EditList(data: BigData) {
-    const [ProductsArray, setProductsArray] = useState<number[]>(data.SelectedProducts);
-    /*
-    useEffect(() => {
-        for(var item of ProductsArray){
-            initialProducts(item);
-        }
-    }, [])
-    */
+    //const [ProductsArray, setProductsArray] = useState<number[]>(data.SelectedProducts);
+    const [ProductsArray, setProductsArray] = useState<number[]>([]);
 
     async function handleEditList(){
         let productListErrorID = document.getElementById('productListError') as HTMLElement;
@@ -48,16 +42,6 @@ export default function EditList(data: BigData) {
           .catch(err => console.log(err))
           
         }
-    }
-
-    function initialProducts(id: number){
-        let productID = document.getElementById('product-'+id) as HTMLElement;
-        productID?.classList.add('productSelected');
-  
-        let buttonAddID = document.getElementById('buttonAdd-'+id) as HTMLElement;
-        let buttonRemoveID = document.getElementById('buttonRemove-'+id) as HTMLElement;
-        buttonAddID.classList.add('displayNone');
-        buttonRemoveID.classList.remove('displayNone');
     }
 
       function AddSetProductsArray(id: number){

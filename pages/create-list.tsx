@@ -65,16 +65,19 @@ export default function CreateList(ProductsInDB: ResponseJSON) {
             return true;
           }
           else{
+            location.href = "#divCreateLink";
             createLinkErrorID.innerHTML = "O Link deve ter entre 3 a 20 digitos";
             return false;
           }
         }
         else{
+          location.href = "#divCreateLink";
           createLinkErrorID.innerHTML = "O Link não pode ter espaço ou caracteres especiais";
           return false;
         }
       }
       else{
+        location.href = "#divCreateLink";
         createLinkErrorID.innerHTML = "Link Obrigatório";
         return false;
       }
@@ -92,7 +95,7 @@ export default function CreateList(ProductsInDB: ResponseJSON) {
     <>
       <main className="main mainProducts">
         <img src="/react.svg" alt="logo" />
-        <div>
+        <div id="divCreateLink">
             <span className="span">www.projeto.com/user/</span>
             <input value={link} onChange={e => setLink(e.target.value)} className="input" type="text" name="link" placeholder="Escolha o link dos convidados" />
             <span id="createLinkError" className="createLinkSpanError" />

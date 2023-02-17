@@ -20,7 +20,6 @@ interface props {
 export const ProductList = (props: props) => {
     const InitialAllProductsQuantity = 16;
     const ProductsPerPage = 8;
-    // REVISAR ISSO, SO APARECE 10 PRIMEIROS, ISSO TEM Q SER PARA O EDIT/CREATE, MAS O [USER].TSX TEM QUE APARECER TODOSSSS
     const [filteredAllProducts,setFilteredAllProducts] = useState(
         props.AllProducts.filter((item: any) => item.id <= InitialAllProductsQuantity)
     );
@@ -31,12 +30,9 @@ export const ProductList = (props: props) => {
         if(props.selectedProducts){
             props.selectedProducts.forEach(itemID => {
                 if(itemID <= productsInScreen-ProductsPerPage){
-                    let productID = document.getElementById('product-'+itemID) as HTMLElement;
-                    productID?.classList.add('productSelected');
-                    let buttonAddID = document.getElementById('buttonAdd-'+itemID) as HTMLElement;
-                    let buttonRemoveID = document.getElementById('buttonRemove-'+itemID) as HTMLElement;
-                    buttonAddID.classList.add('displayNone');
-                    buttonRemoveID.classList.remove('displayNone');
+                    addProduct(itemID);
+                    let itemIndex: any = props.selectedProducts?.indexOf(itemID);
+                    delete props.selectedProducts?.[itemIndex];
                 }
             })
         }
@@ -80,7 +76,7 @@ export const ProductList = (props: props) => {
                     props.AllProducts.map((product: any) => {return <ProductCard key={product.id} product={product} addProduct={addProduct} removeProduct={removeProduct} withButton={props.withButton}/>})
                 )}
             </div>
-            {(props.AllProducts.length > productsInScreen ? <Button id="" additionalClass="width50" text="Ver Mais" type="submit" func={handleAddMore}/> : <></>)}
+            {(props.AllProducts.length > productsInScreen && props.withButton ? <Button id="" additionalClass="width50" text="Ver Mais" type="submit" func={handleAddMore}/> : <></>)}
         </>
     )
 }
