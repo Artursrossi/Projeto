@@ -1,10 +1,11 @@
-import { Button } from '@/components/Button';
-import { ProductList } from '@/components/ProductList';
-import axios from 'axios';
 import { GetStaticProps, GetStaticPaths } from 'next'
 import Router from 'next/router'
-import { parseCookies } from 'nookies';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { parseCookies } from 'nookies';
+
+import { Button } from '../../components/Button';
+import { ProductList } from '../../components/ProductList';
 
 type ProductsType = {
     id: number;

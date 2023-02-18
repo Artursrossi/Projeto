@@ -1,12 +1,14 @@
 import { GetServerSideProps } from 'next';
+import Router from 'next/router'
 import axios from 'axios';
 import { useState } from 'react';
 import { parseCookies } from 'nookies';
-import Router from 'next/router'
-import { ProductList } from '@/components/ProductList';
+
+import { Button } from '../components/Button';
+import { ProductList } from '../components/ProductList';
+
 import { AddLoadingAnimation } from '../utils/AddLoadingAnimation';
 import { RemoveLoadingAnimation } from '../utils/RemoveLoadingAnimation';
-import { Button } from '@/components/Button';
 import { VerifyInputs } from '../utils/VerifyInputs';
 
 type ProductsType = {

@@ -1,5 +1,6 @@
-import { Button } from '../Button';
 import styles from './styles.module.css';
+
+import { Button } from '../Button';
 
 interface productData {
     id: number; 

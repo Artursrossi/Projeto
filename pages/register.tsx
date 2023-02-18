@@ -1,10 +1,12 @@
-import Link from 'next/link'
-import Router from 'next/router'
+import Link from 'next/link';
+import Router from 'next/router';
 import React, { useState, FormEvent } from 'react';
 import axios from 'axios';
+
+import { Button } from '../components/Button';
+
 import { AddLoadingAnimation } from '../utils/AddLoadingAnimation';
 import { RemoveLoadingAnimation } from '../utils/RemoveLoadingAnimation';
-import { Button } from '@/components/Button';
 import { VerifyInputs } from '../utils/VerifyInputs';
 
 export default function Register() {
@@ -21,7 +23,6 @@ export default function Register() {
 
         await axios.post('/api/Register', { name, email, pass, samepass })
         .then(res => {
-          console.log(res);
           if(res.data == "EmailAlreadyExist"){
             let formEmailErrorID= document.getElementById('formEmailError') as HTMLElement;
             formEmailErrorID.innerHTML = "Email Já Existente";

@@ -1,4 +1,5 @@
-import { ChangeEventHandler, MouseEventHandler } from 'react';
+import { ChangeEventHandler } from 'react';
+
 import styles from './styles.module.css';
 
 interface props{

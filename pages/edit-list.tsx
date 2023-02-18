@@ -1,11 +1,13 @@
 import { GetServerSideProps } from 'next';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-import { parseCookies } from 'nookies';
 import Router from 'next/router'
-import { ProductList } from '@/components/ProductList';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { parseCookies } from 'nookies';
+
+import { Button } from '../components/Button';
+import { ProductList } from '../components/ProductList';
+
 import { AddLoadingAnimation } from '../utils/AddLoadingAnimation';
-import { Button } from '@/components/Button';
 
 type ProductsType = {
     id: number; 
@@ -21,7 +23,11 @@ interface BigData {
 
 export default function EditList(data: BigData) {
     //const [ProductsArray, setProductsArray] = useState<number[]>(data.SelectedProducts);
-    const [ProductsArray, setProductsArray] = useState<number[]>([]);
+    const [ProductsArray, setProductsArray] = useState<number[]>(data.SelectedProducts);
+
+    useEffect(() => {
+      console.log(ProductsArray)
+    }, [ProductsArray])
 
     async function handleEditList(){
         let productListErrorID = document.getElementById('productListError') as HTMLElement;
@@ -29,6 +35,7 @@ export default function EditList(data: BigData) {
             productListErrorID.innerHTML = "Você deve escolher algum produto";
         }
         else{
+          console.log(ProductsArray)
             productListErrorID.innerHTML = "";
             AddLoadingAnimation();
 

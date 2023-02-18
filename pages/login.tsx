@@ -3,9 +3,11 @@ import React, { useState, FormEvent } from 'react';
 import axios from 'axios';
 import Router from 'next/router'
 import { setCookie } from 'nookies';
+
+import { Button } from '../components/Button';
+
 import { AddLoadingAnimation } from '../utils/AddLoadingAnimation';
 import { RemoveLoadingAnimation } from '../utils/RemoveLoadingAnimation';
-import { Button } from '@/components/Button';
 import { VerifyInputs } from '../utils/VerifyInputs';
 
 export default function Login(){

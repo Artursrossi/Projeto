@@ -1,7 +1,10 @@
+import { useEffect, useState } from 'react';
+
 import styles from './styles.module.css';
+
 import { ProductCard } from '../ProductCard'; 
 import { Button } from '../Button';
-import { useEffect, useState } from 'react';
+
 
 type AllProducts = {
     id: number; 
@@ -23,25 +26,38 @@ export const ProductList = (props: props) => {
     const [filteredAllProducts,setFilteredAllProducts] = useState(
         props.AllProducts.filter((item: any) => item.id <= InitialAllProductsQuantity)
     );
-    const [productsInScreen,setProductsInScreen] = useState(InitialAllProductsQuantity+ProductsPerPage);
-
+    const [productsInScreen,setProductsInScreen] = useState(InitialAllProductsQuantity);
+    const [productsThatNeedsVisualSelectedClass,setProductsThatNeedsVisualSelectedClass] = useState(props.selectedProducts);
 
     useEffect(() => {
-        if(props.selectedProducts){
-            props.selectedProducts.forEach(itemID => {
-                if(itemID <= productsInScreen-ProductsPerPage){
-                    addProduct(itemID);
-                    let itemIndex: any = props.selectedProducts?.indexOf(itemID);
-                    delete props.selectedProducts?.[itemIndex];
+        if(productsThatNeedsVisualSelectedClass.length != 0){
+            for(let itemID of productsThatNeedsVisualSelectedClass){
+                if(itemID <= productsInScreen){
+                    //VISUAL SELECTED CLASS ADD TO INITIAL PRODUCTS
+                    let productID = document.getElementById('product-'+itemID) as HTMLElement;
+                    productID?.classList.add('productSelected');
+                    let buttonAddID = document.getElementById('buttonAdd-'+itemID) as HTMLElement;
+                    let buttonRemoveID = document.getElementById('buttonRemove-'+itemID) as HTMLElement;
+                    buttonAddID.classList.add('displayNone');
+                    buttonRemoveID.classList.remove('displayNone');
+                    setProductsThatNeedsVisualSelectedClass(productsThatNeedsVisualSelectedClass.filter(items => items != itemID));
                 }
-            })
+            }
         }
-    }, [filteredAllProducts])  
+
+    }, [filteredAllProducts])
+    
+    
 
     function handleAddMore(){
         setProductsInScreen(productsInScreen+ProductsPerPage)
-        setFilteredAllProducts(props.AllProducts.filter((item: any) => item.id <= productsInScreen));
+        // UseEffect [productsInScreen]
     }
+
+    useEffect(() => {
+        setFilteredAllProducts(props.AllProducts.filter((item: any) => item.id <= productsInScreen));
+    }, [productsInScreen])
+
 
     function addProduct(id: number){
         let productID = document.getElementById('product-'+id) as HTMLElement;
