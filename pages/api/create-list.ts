@@ -16,7 +16,6 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
             },
         })
         .then(checkLink => {
-            console.log(checkLink)
             if(!checkLink){
                 CheckEmail();
             }

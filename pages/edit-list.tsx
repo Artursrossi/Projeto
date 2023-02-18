@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import Router from 'next/router'
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { parseCookies } from 'nookies';
 
 import { Button } from '../components/Button';
@@ -25,17 +25,12 @@ export default function EditList(data: BigData) {
     //const [ProductsArray, setProductsArray] = useState<number[]>(data.SelectedProducts);
     const [ProductsArray, setProductsArray] = useState<number[]>(data.SelectedProducts);
 
-    useEffect(() => {
-      console.log(ProductsArray)
-    }, [ProductsArray])
-
     async function handleEditList(){
         let productListErrorID = document.getElementById('productListError') as HTMLElement;
         if(ProductsArray.length === 0){
             productListErrorID.innerHTML = "Você deve escolher algum produto";
         }
         else{
-          console.log(ProductsArray)
             productListErrorID.innerHTML = "";
             AddLoadingAnimation();
 
