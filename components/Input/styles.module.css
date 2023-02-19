@@ -1,32 +1,32 @@
 .input {
-    outline: none;
-    background-color: var(--background-200);
-    height: 5rem;
-    border-radius: 0.5rem;
-    border: 1px solid;
-    border-color: rgba(255,255,255,0.04);
-    width: 100%;
-    padding-left: 1.6rem;
-    padding-right: 1.6rem;
-    margin-top: 0.8rem;
-    color: var(--text);
+  outline: none;
+  background-color: var(--background-200);
+  height: 5rem;
+  border-radius: 0.5rem;
+  border: 1px solid;
+  border-color: rgba(255, 255, 255, 0.04);
+  width: 100%;
+  padding-left: 1.6rem;
+  padding-right: 1.6rem;
+  margin-top: 0.8rem;
+  color: var(--text);
 }
 
 .input:focus {
-    border-color: var(--primary-100);
-    z-index: 1;
-    box-shadow: 0 0 0 1px var(--primary-100);
+  border-color: var(--primary-100);
+  z-index: 1;
+  box-shadow: 0 0 0 1px var(--primary-100);
 }
 
-::placeholder { 
-    color: var(--text-placeholder);
-    opacity: 1;
+::placeholder {
+  color: var(--text-placeholder);
+  opacity: 1;
 }
-  
-:-ms-input-placeholder { 
-    color: var(--text-placeholder);
+
+:-ms-input-placeholder {
+  color: var(--text-placeholder);
 }
-  
+
 ::-ms-input-placeholder {
-    color: var(--text-placeholder);
+  color: var(--text-placeholder);
 }

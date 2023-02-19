@@ -6,7 +6,9 @@ export default function PageNotFound() {
       <main className="main">
         <img src="/react.svg" alt="logo" />
         <p className="span">Página Não Encontrada</p>
-        <Link className="button" href="/">Retornar</Link>
+        <Link className="button" href="/">
+          Retornar
+        </Link>
       </main>
     </>
   )

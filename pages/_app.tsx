@@ -8,7 +8,10 @@ export default function App({ Component, pageProps }: AppProps) {
     <AuthProvider>
       <Head>
         <title>Projetinho</title>
-        <meta name="description" content="Projeto desenvolvido por Artur Schincariol Rossi" />
+        <meta
+          name="description"
+          content="Projeto desenvolvido por Artur Schincariol Rossi"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Component {...pageProps} />

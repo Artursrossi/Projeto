@@ -1,203 +1,203 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-:root{
-    --primary-100: #8257e5;
-    --primary-200: #6b46c1;
-    --background-100: #202024;
-    --background-200: #121214;
-    --text: #fff;
-    --text-grey: #A0AEC0;
-    --text-placeholder: #474b4c;
+:root {
+  --primary-100: #8257e5;
+  --primary-200: #6b46c1;
+  --background-100: #202024;
+  --background-200: #121214;
+  --text: #fff;
+  --text-grey: #a0aec0;
+  --text-placeholder: #474b4c;
 
-    font-size: 62.5%;
+  font-size: 62.5%;
 }
 
 body {
-    background-color: var(--background-200);
-    color: var(--text);
+  background-color: var(--background-200);
+  color: var(--text);
 }
 
 body * {
-    font-family: 'Roboto', sans-serif;
-    font-size: 1.6rem;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.6rem;
 }
 
 #__next {
-    display: grid;
-    place-items: center;
-    height: 100vh;
+  display: grid;
+  place-items: center;
+  height: 100vh;
 }
 
 .main {
-    width: min(40rem, 87%);
-    margin: auto;
-    background-color: var(--background-100);
-    border-radius: 0.8rem;
-    padding: 3.2rem;
-    display: flex;
-    flex-direction: column;   
+  width: min(40rem, 87%);
+  margin: auto;
+  background-color: var(--background-100);
+  border-radius: 0.8rem;
+  padding: 3.2rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .main img {
-    display: block;
-    margin: auto;
-    width: 100%;
+  display: block;
+  margin: auto;
+  width: 100%;
 }
 
-.button{
-    outline: none;
-    background-color: var(--primary-100);
-    height: 5rem;
-    justify-content: center;
-    border-radius: 0.5rem;
-    align-items: center;
-    width: 100%;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    color: var(--text);
-    margin-top: 2.4rem;
-    border-color: rgba(255,255,255,0.04);
+.button {
+  outline: none;
+  background-color: var(--primary-100);
+  height: 5rem;
+  justify-content: center;
+  border-radius: 0.5rem;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  color: var(--text);
+  margin-top: 2.4rem;
+  border-color: rgba(255, 255, 255, 0.04);
 }
 
-.button:hover{
-    background-color: var(--primary-200);
+.button:hover {
+  background-color: var(--primary-200);
 }
 
 .input {
-    outline: none;
-    background-color: var(--background-200);
-    height: 5rem;
-    border-radius: 0.5rem;
-    border: 1px solid;
-    border-color: rgba(255,255,255,0.04);
-    width: 100%;
-    padding-left: 1.6rem;
-    padding-right: 1.6rem;
-    margin-top: 0.8rem;
-    color: var(--text);
+  outline: none;
+  background-color: var(--background-200);
+  height: 5rem;
+  border-radius: 0.5rem;
+  border: 1px solid;
+  border-color: rgba(255, 255, 255, 0.04);
+  width: 100%;
+  padding-left: 1.6rem;
+  padding-right: 1.6rem;
+  margin-top: 0.8rem;
+  color: var(--text);
 }
 
 .input:focus {
-    border-color: var(--primary-100);
-    z-index: 1;
-    box-shadow: 0 0 0 1px var(--primary-100);
+  border-color: var(--primary-100);
+  z-index: 1;
+  box-shadow: 0 0 0 1px var(--primary-100);
 }
 
-::placeholder { 
-    color: var(--text-placeholder);
-    opacity: 1;
+::placeholder {
+  color: var(--text-placeholder);
+  opacity: 1;
 }
-  
-:-ms-input-placeholder { 
-    color: var(--text-placeholder);
+
+:-ms-input-placeholder {
+  color: var(--text-placeholder);
 }
-  
+
 ::-ms-input-placeholder {
-    color: var(--text-placeholder);
+  color: var(--text-placeholder);
 }
 
 .formAlreadyAccount {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.6rem;
 }
 
 .formAlreadyAccountLink {
-    padding-left: 1rem;
-    text-decoration: none;
-    color: var(--primary-200);
+  padding-left: 1rem;
+  text-decoration: none;
+  color: var(--primary-200);
 }
 
-.formAlreadyAccountLink:hover{
-    color: var(--primary-100);
+.formAlreadyAccountLink:hover {
+  color: var(--primary-100);
 }
 
 form span {
-    display: inline-block;
-    color: rgb(211, 66, 66);
-    padding-top: 0.8rem;
-    font-size: 1.4rem;
-    padding-left: 0.8rem
+  display: inline-block;
+  color: rgb(211, 66, 66);
+  padding-top: 0.8rem;
+  font-size: 1.4rem;
+  padding-left: 0.8rem;
 }
 
 .displayNone {
-    display: none!important;
+  display: none !important;
 }
 
-.span{
-    text-align: center;
-    font-size: 2rem;
-    color: var(--text-grey);
-    margin-bottom: 0.5rem;
+.span {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--text-grey);
+  margin-bottom: 0.5rem;
 }
 
-.productList{
-    display: flex;
-    flex-wrap: wrap;
+.productList {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.mainProducts{
-    width: min(100rem, 87%);
-    align-items: center;
+.mainProducts {
+  width: min(100rem, 87%);
+  align-items: center;
 }
 
-.product{
-    border: 5px solid;
-    border-color: rgba(255,255,255,0.04);
-    background-color: #fff;
-    border-radius: 1rem;
-    margin-top: 1.6rem;
-    margin-left: 1.2rem;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
+.product {
+  border: 5px solid;
+  border-color: rgba(255, 255, 255, 0.04);
+  background-color: #fff;
+  border-radius: 1rem;
+  margin-top: 1.6rem;
+  margin-left: 1.2rem;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
-.productSelected{
-    border-color: var(--primary-100)!important;
+.productSelected {
+  border-color: var(--primary-100) !important;
 }
 
-.productTitle{
-    color: var(--text-placeholder);
-    text-align: center;
-    font-size: 2.4rem;
+.productTitle {
+  color: var(--text-placeholder);
+  text-align: center;
+  font-size: 2.4rem;
 }
 
-.productImage{
-    width: 16rem!important;
+.productImage {
+  width: 16rem !important;
 }
 
-.productButton{
-    width: 90%;
-    height: 4rem;
-    margin-top: 1.2rem;
-    margin-bottom: 0.8rem;
+.productButton {
+  width: 90%;
+  height: 4rem;
+  margin-top: 1.2rem;
+  margin-bottom: 0.8rem;
 }
 
-.createLinkSpanError{
-    display: inline-block;
-    color: rgb(211, 66, 66);
-    padding-top: 0.8rem;
-    font-size: 1.4rem;
-    padding-left: 0.8rem
+.createLinkSpanError {
+  display: inline-block;
+  color: rgb(211, 66, 66);
+  padding-top: 0.8rem;
+  font-size: 1.4rem;
+  padding-left: 0.8rem;
 }
 
 .isOwner {
-    width: 100%;
+  width: 100%;
 }
 
-.isOwner button{
-    margin-top: 0rem;
-    margin-bottom: 1.6rem;
+.isOwner button {
+  margin-top: 0rem;
+  margin-bottom: 1.6rem;
 }
 
-.width50{
-    width: 50%!important;
-    margin: 2.4rem auto;
+.width50 {
+  width: 50% !important;
+  margin: 2.4rem auto;
 }
