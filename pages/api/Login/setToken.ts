@@ -1,24 +1,27 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcrypt'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { type NextApiRequest, type NextApiResponse } from 'next'
 
 const prisma = new PrismaClient()
 
-export default async (request: NextApiRequest, response: NextApiResponse) => {
+export default async (
+  request: NextApiRequest,
+  response: NextApiResponse
+): Promise<void> => {
   const { email, pass } = request.body
 
   if (verifyData()) {
     await prisma.user
       .findUnique({
         where: {
-          email: email,
+          email,
         },
         select: {
           pass: true,
         },
       })
       .then((hash) => {
-        if (hash) {
+        if (hash != null) {
           LogIn(hash.pass)
         } else {
           return response.status(200).json('InvalidEmail')
@@ -31,13 +34,13 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     return response.status(200).json('VerifyDataError')
   }
 
-  async function LogIn(hash: string) {
-    const validPassword = await bcrypt.compareSync(pass, hash)
+  async function LogIn(hash: string): Promise<void> {
+    const validPassword = bcrypt.compareSync(pass, hash)
     if (validPassword) {
       await prisma.user
         .findUnique({
           where: {
-            email: email,
+            email,
           },
           select: {
             token: true,
@@ -54,11 +57,11 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     }
   }
 
-  function verifyData() {
+  function verifyData(): boolean {
     // email, pass, email == RegEx
-    let ReGexEmail =
+    const ReGexEmail =
       /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/
-    if (email && pass && ReGexEmail.test(email) == true) {
+    if (email !== undefined && pass !== undefined && ReGexEmail.test(email)) {
       return true
     } else {
       return false

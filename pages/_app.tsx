@@ -1,9 +1,10 @@
+import React from 'react'
 import '../styles/global.css'
 import type { AppProps } from 'next/app'
 import { AuthProvider } from '../contexts/AuthContext'
 import Head from 'next/head'
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <AuthProvider>
       <Head>

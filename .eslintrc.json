@@ -9,10 +9,19 @@
     "prettier"
   ],
   "overrides": [],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
+    "project": "./tsconfig.json",
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react"],
-  "rules": {}
+  "plugins": ["react", "@typescript-eslint"],
+  "rules": {
+    "no-useless-escape": "off",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-confusing-void-expression": "off",
+    "@typescript-eslint/restrict-plus-operands": "off",
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/ban-types": "off"
+  }
 }

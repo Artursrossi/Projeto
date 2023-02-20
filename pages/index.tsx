@@ -1,6 +1,7 @@
+import React from 'react'
 import Link from 'next/link'
 
-export default function Home() {
+export default function Home(): JSX.Element {
   return (
     <>
       <main className="main">

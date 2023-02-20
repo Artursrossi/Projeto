@@ -1,9 +1,12 @@
 import { PrismaClient } from '@prisma/client'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { type NextApiRequest, type NextApiResponse } from 'next'
 
 const prisma = new PrismaClient()
 
-export default async (request: NextApiRequest, response: NextApiResponse) => {
+export default async (
+  request: NextApiRequest,
+  response: NextApiResponse
+): Promise<void> => {
   const { link, ProductsArray } = request.body
 
   if (VerifyData()) {
@@ -12,7 +15,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     await prisma.links
       .update({
         where: {
-          link: link,
+          link,
         },
         data: {
           productsIDs: productsArrayInString,
@@ -28,8 +31,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     return response.status(200).json('VerifyDataError')
   }
 
-  function VerifyData() {
-    if (link && ProductsArray) {
+  function VerifyData(): boolean {
+    if (link !== undefined && ProductsArray !== undefined) {
       return true
     } else {
       return false

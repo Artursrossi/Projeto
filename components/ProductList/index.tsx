@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import styles from './styles.module.css'
 
@@ -12,14 +12,14 @@ interface AllProducts {
 }
 
 interface props {
-  AllProducts: Array<AllProducts>
-  AddSetProductsArray: Function
-  RemoveSetProductsArray: Function
+  AllProducts: AllProducts[]
+  AddSetProductsArray?: Function
+  RemoveSetProductsArray?: Function
   withButton: boolean
-  selectedProducts: Array<number> | null
+  selectedProducts?: number[]
 }
 
-export const ProductList = (props: props) => {
+export const ProductList = (props: props): JSX.Element => {
   const InitialAllProductsQuantity = 16
   const ProductsPerPage = 8
   const [filteredAllProducts, setFilteredAllProducts] = useState(
@@ -36,25 +36,25 @@ export const ProductList = (props: props) => {
   ] = useState(props.selectedProducts)
 
   useEffect(() => {
-    if (productsThatNeedsVisualSelectedClass.length != 0) {
-      for (let itemID of productsThatNeedsVisualSelectedClass) {
+    if (productsThatNeedsVisualSelectedClass !== undefined) {
+      for (const itemID of productsThatNeedsVisualSelectedClass) {
         if (itemID <= productsInScreen) {
-          //VISUAL SELECTED CLASS ADD TO INITIAL PRODUCTS
-          let productID = document.getElementById(
+          // VISUAL SELECTED CLASS ADD TO INITIAL PRODUCTS
+          const productID = document.getElementById(
             'product-' + itemID
           ) as HTMLElement
           productID?.classList.add('productSelected')
-          let buttonAddID = document.getElementById(
+          const buttonAddID = document.getElementById(
             'buttonAdd-' + itemID
           ) as HTMLElement
-          let buttonRemoveID = document.getElementById(
+          const buttonRemoveID = document.getElementById(
             'buttonRemove-' + itemID
           ) as HTMLElement
           buttonAddID?.classList.add('displayNone')
           buttonRemoveID?.classList.remove('displayNone')
           setProductsThatNeedsVisualSelectedClass(
             productsThatNeedsVisualSelectedClass.filter(
-              (items) => items != itemID
+              (items) => items !== itemID
             )
           )
         }
@@ -62,7 +62,7 @@ export const ProductList = (props: props) => {
     }
   }, [filteredAllProducts])
 
-  function handleAddMore() {
+  function handleAddMore(): void {
     setProductsInScreen(productsInScreen + ProductsPerPage)
     // UseEffect [productsInScreen]
   }
@@ -75,32 +75,36 @@ export const ProductList = (props: props) => {
     )
   }, [productsInScreen])
 
-  function addProduct(id: number) {
-    let productID = document.getElementById('product-' + id) as HTMLElement
+  function addProduct(id: number): void {
+    const productID = document.getElementById('product-' + id) as HTMLElement
     productID?.classList.add('productSelected')
 
-    let buttonAddID = document.getElementById('buttonAdd-' + id) as HTMLElement
-    let buttonRemoveID = document.getElementById(
+    const buttonAddID = document.getElementById(
+      'buttonAdd-' + id
+    ) as HTMLElement
+    const buttonRemoveID = document.getElementById(
       'buttonRemove-' + id
     ) as HTMLElement
     buttonAddID?.classList.add('displayNone')
     buttonRemoveID?.classList.remove('displayNone')
 
-    props.AddSetProductsArray(id)
+    props.AddSetProductsArray?.(id)
   }
 
-  function removeProduct(id: number) {
-    let productID = document.getElementById('product-' + id) as HTMLElement
+  function removeProduct(id: number): void {
+    const productID = document.getElementById('product-' + id) as HTMLElement
     productID?.classList.remove('productSelected')
 
-    let buttonAddID = document.getElementById('buttonAdd-' + id) as HTMLElement
-    let buttonRemoveID = document.getElementById(
+    const buttonAddID = document.getElementById(
+      'buttonAdd-' + id
+    ) as HTMLElement
+    const buttonRemoveID = document.getElementById(
       'buttonRemove-' + id
     ) as HTMLElement
     buttonAddID?.classList.remove('displayNone')
     buttonRemoveID?.classList.add('displayNone')
 
-    props.RemoveSetProductsArray(id)
+    props.RemoveSetProductsArray?.(id)
   }
 
   return (
@@ -123,8 +127,6 @@ export const ProductList = (props: props) => {
                 <ProductCard
                   key={product.id}
                   product={product}
-                  addProduct={addProduct}
-                  removeProduct={removeProduct}
                   withButton={props.withButton}
                 />
               )

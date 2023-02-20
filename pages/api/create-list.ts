@@ -1,23 +1,26 @@
 import { PrismaClient } from '@prisma/client'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { type NextApiRequest, type NextApiResponse } from 'next'
 
 const prisma = new PrismaClient()
 
-export default async (request: NextApiRequest, response: NextApiResponse) => {
+export default async (
+  request: NextApiRequest,
+  response: NextApiResponse
+): Promise<void> => {
   const { token, link, ProductsArray } = request.body
 
   const productsArrayInString: string = ProductsArray.toString()
 
   if (VerifyData()) {
-    //verify if link already exists
+    // verify if link already exists
     await prisma.links
       .findUnique({
         where: {
-          link: link,
+          link,
         },
       })
       .then((checkLink) => {
-        if (!checkLink) {
+        if (checkLink == null) {
           CheckEmail()
         } else {
           return response.status(200).json('LinkAlreadyExists')
@@ -30,18 +33,18 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     return response.status(200).json('VerifyDataError')
   }
 
-  async function CheckEmail() {
+  async function CheckEmail(): Promise<void> {
     await prisma.user
       .findUnique({
         where: {
-          token: token,
+          token,
         },
         select: {
           email: true,
         },
       })
       .then((res) => {
-        if (res) {
+        if (res != null) {
           CreateList(res.email)
         } else {
           return response.status(200).json('InvalidToken')
@@ -52,12 +55,12 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       })
   }
 
-  async function CreateList(email: string) {
+  async function CreateList(email: string): Promise<void> {
     await prisma.links
       .create({
         data: {
           userEmail: email,
-          link: link,
+          link,
           productsIDs: productsArrayInString,
         },
       })
@@ -69,14 +72,14 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       })
   }
 
-  function VerifyData() {
+  function VerifyData(): boolean {
     // token, link, ProductsArray, link == onlyLetters, 3>=link>=20
-    let ReGexLink = /^[A-Za-z]{3,20}$/
+    const ReGexLink = /^[A-Za-z]{3,20}$/
     if (
-      token &&
-      link &&
-      ProductsArray &&
-      ReGexLink.test(link) == true &&
+      token !== undefined &&
+      link !== undefined &&
+      ProductsArray !== undefined &&
+      ReGexLink.test(link) &&
       link.length >= 3 &&
       link.length <= 20
     ) {

@@ -1,7 +1,7 @@
-import { GetServerSideProps } from 'next'
+import React, { useState } from 'react'
+import { type GetServerSideProps } from 'next'
 import Router from 'next/router'
 import axios from 'axios'
-import { useState } from 'react'
 import { parseCookies } from 'nookies'
 
 import { Button } from '../components/Button'
@@ -9,26 +9,26 @@ import { ProductList } from '../components/ProductList'
 
 import { AddLoadingAnimation } from '../utils/AddLoadingAnimation'
 
-type ProductsType = {
+interface ProductsType {
   id: number
   title: string
   url: string
 }
 
 interface BigData {
-  AllProducts: Array<ProductsType>
-  SelectedProducts: Array<number>
+  AllProducts: ProductsType[]
+  SelectedProducts: number[]
   link: string
 }
 
-export default function EditList(data: BigData) {
-  //const [ProductsArray, setProductsArray] = useState<number[]>(data.SelectedProducts);
+export default function EditList(data: BigData): JSX.Element {
+  // const [ProductsArray, setProductsArray] = useState<number[]>(data.SelectedProducts);
   const [ProductsArray, setProductsArray] = useState<number[]>(
     data.SelectedProducts
   )
 
-  async function handleEditList() {
-    let productListErrorID = document.getElementById(
+  async function handleEditList(): Promise<void> {
+    const productListErrorID = document.getElementById(
       'productListError'
     ) as HTMLElement
     if (ProductsArray.length === 0) {
@@ -40,21 +40,23 @@ export default function EditList(data: BigData) {
       const { link } = data
       await axios
         .post('/api/edit-list', { link, ProductsArray })
-        .then((res) => {
-          if (res.status == 201) {
-            Router.push('/users/' + link)
+        .then(async (res) => {
+          if (res.status === 201) {
+            await Router.push('/users/' + link)
           }
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 
-  function AddSetProductsArray(id: number) {
+  function AddSetProductsArray(id: number): void {
     setProductsArray([...ProductsArray, id])
   }
 
-  function RemoveSetProductsArray(id: number) {
-    setProductsArray(ProductsArray.filter((items) => items != id))
+  function RemoveSetProductsArray(id: number): void {
+    setProductsArray(ProductsArray.filter((items) => items !== id))
   }
 
   return (
@@ -84,7 +86,7 @@ export default function EditList(data: BigData) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { token } = parseCookies(ctx)
 
-  if (!token) {
+  if (token == null) {
     ctx.res.writeHead(302, { Location: '/login' })
     ctx.res.end()
   }
@@ -93,7 +95,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     'http://localhost:3000/api/getLinkFromToken',
     { token }
   )
-  if (resLink.status != 201) {
+  if (resLink.status !== 201) {
     ctx.res.writeHead(302, { Location: '/login' })
     ctx.res.end()
   }

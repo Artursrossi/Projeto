@@ -1,7 +1,7 @@
-import { GetServerSideProps } from 'next'
+import React, { useState } from 'react'
+import { type GetServerSideProps } from 'next'
 import Router from 'next/router'
 import axios from 'axios'
-import { useState } from 'react'
 import { parseCookies } from 'nookies'
 
 import { Button } from '../components/Button'
@@ -11,22 +11,22 @@ import { AddLoadingAnimation } from '../utils/AddLoadingAnimation'
 import { RemoveLoadingAnimation } from '../utils/RemoveLoadingAnimation'
 import { VerifyInputs } from '../utils/VerifyInputs'
 
-type ProductsType = {
+interface ProductsType {
   id: number
-  name: string
-  icon: string
+  title: string
+  url: string
 }
 
 interface ResponseJSON {
-  data: Array<ProductsType>
+  data: ProductsType[]
 }
 
-export default function CreateList(ProductsInDB: ResponseJSON) {
+export default function CreateList(ProductsInDB: ResponseJSON): JSX.Element {
   const [ProductsArray, setProductsArray] = useState<number[]>([])
   const [link, setLink] = useState('')
 
-  async function handleCreateList() {
-    let VerifyInputsProps: any = {
+  async function handleCreateList(): Promise<void> {
+    const VerifyInputsProps: any = {
       validateName: false,
       validateEmail: false,
       validatePass: false,
@@ -34,8 +34,8 @@ export default function CreateList(ProductsInDB: ResponseJSON) {
       validateLink: true,
       link,
     }
-    if (VerifyInputs(VerifyInputsProps) === true) {
-      let productListErrorID = document.getElementById(
+    if (VerifyInputs(VerifyInputsProps)) {
+      const productListErrorID = document.getElementById(
         'productListError'
       ) as HTMLElement
       if (ProductsArray.length === 0) {
@@ -44,31 +44,33 @@ export default function CreateList(ProductsInDB: ResponseJSON) {
         productListErrorID.innerHTML = ''
         AddLoadingAnimation()
 
-        const { token: token } = parseCookies()
+        const { token } = parseCookies()
         await axios
           .post('/api/create-list', { token, link, ProductsArray })
-          .then((res) => {
-            if (res.data == 'LinkAlreadyExists') {
-              let createLinkErrorID = document.getElementById(
+          .then(async (res) => {
+            if (res.data === 'LinkAlreadyExists') {
+              const createLinkErrorID = document.getElementById(
                 'createLinkError'
               ) as HTMLElement
               createLinkErrorID.innerHTML = 'Link Já Existente'
               RemoveLoadingAnimation()
             } else {
-              Router.push('/users/' + link)
+              await Router.push('/users/' + link)
             }
           })
-          .catch((err) => console.log(err))
+          .catch((err) => {
+            console.log(err)
+          })
       }
     }
   }
 
-  function AddSetProductsArray(id: number) {
+  function AddSetProductsArray(id: number): void {
     setProductsArray([...ProductsArray, id])
   }
 
-  function RemoveSetProductsArray(id: number) {
-    setProductsArray(ProductsArray.filter((items) => items != id))
+  function RemoveSetProductsArray(id: number): void {
+    setProductsArray(ProductsArray.filter((items) => items !== id))
   }
 
   return (
@@ -76,10 +78,12 @@ export default function CreateList(ProductsInDB: ResponseJSON) {
       <main className="main mainProducts">
         <img src="/react.svg" alt="logo" />
         <div id="divCreateLink">
-          <span className="span">www.projeto.com/user/</span>
+          <span className="span">www.projeto.com/users/</span>
           <input
             value={link}
-            onChange={(e) => setLink(e.target.value)}
+            onChange={(e) => {
+              setLink(e.target.value)
+            }}
             className="input"
             type="text"
             name="link"
@@ -110,7 +114,7 @@ export default function CreateList(ProductsInDB: ResponseJSON) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { token } = parseCookies(ctx)
 
-  if (!token) {
+  if (token == null) {
     ctx.res.writeHead(302, { Location: '/login' })
     ctx.res.end()
   }
@@ -118,12 +122,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   await axios
     .post('http://localhost:3000/api/getLinkFromToken', { token })
     .then((res) => {
-      if (res.status == 201) {
+      if (res.status === 201) {
         ctx.res.writeHead(302, { Location: '/users/' + res.data })
         ctx.res.end()
       }
     })
-    .catch((err) => console.log(err))
+    .catch((err) => {
+      console.log(err)
+    })
 
   const res = await axios.get('http://localhost:3000/api/getProductsDB')
   const data = res.data

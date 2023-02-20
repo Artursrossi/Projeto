@@ -1,16 +1,19 @@
 import { PrismaClient } from '@prisma/client'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { type NextApiRequest, type NextApiResponse } from 'next'
 
 const prisma = new PrismaClient()
 
-export default async (request: NextApiRequest, response: NextApiResponse) => {
+export default async (
+  request: NextApiRequest,
+  response: NextApiResponse
+): Promise<void> => {
   const { link } = request.body
 
   if (VerifyData()) {
     await prisma.links
       .findUnique({
         where: {
-          link: link,
+          link,
         },
         select: {
           productsIDs: true,
@@ -26,8 +29,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     return response.status(200).json('VerifyDataError')
   }
 
-  function VerifyData() {
-    if (link) {
+  function VerifyData(): boolean {
+    if (link !== undefined) {
       return true
     } else {
       return false

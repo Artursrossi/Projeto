@@ -1,6 +1,7 @@
+import React from 'react'
 import Link from 'next/link'
 
-export default function PageNotFound() {
+export default function PageNotFound(): JSX.Element {
   return (
     <>
       <main className="main">

@@ -1,4 +1,4 @@
-import { ChangeEventHandler } from 'react'
+import React, { type ChangeEventHandler } from 'react'
 
 import styles from './styles.module.css'
 
@@ -11,7 +11,7 @@ interface props {
   spanErrorID: string
 }
 
-export const Input = (props: props) => {
+export const Input = (props: props): JSX.Element => {
   return (
     <>
       <input

@@ -1,16 +1,19 @@
 import { PrismaClient } from '@prisma/client'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { type NextApiRequest, type NextApiResponse } from 'next'
 
 const prisma = new PrismaClient()
 
-export default async (request: NextApiRequest, response: NextApiResponse) => {
+export default async (
+  request: NextApiRequest,
+  response: NextApiResponse
+): Promise<void> => {
   const { token } = request.body
 
   if (verifyData()) {
     await prisma.user
       .findUnique({
         where: {
-          token: token,
+          token,
         },
         select: {
           name: true,
@@ -27,8 +30,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     return response.status(200).json('VerifyDataError')
   }
 
-  function verifyData() {
-    if (token) {
+  function verifyData(): boolean {
+    if (token !== undefined) {
       return true
     } else {
       return false

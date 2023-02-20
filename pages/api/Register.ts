@@ -1,22 +1,25 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcrypt'
 import { v4 as uuid } from 'uuid'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { type NextApiRequest, type NextApiResponse } from 'next'
 
 const prisma = new PrismaClient()
 
-export default async (request: NextApiRequest, response: NextApiResponse) => {
+export default async (
+  request: NextApiRequest,
+  response: NextApiResponse
+): Promise<void> => {
   const { name, email, pass, samepass } = request.body
 
   if (VerifyData()) {
     await prisma.user
       .findUnique({
         where: {
-          email: email,
+          email,
         },
       })
       .then((checkEmailOnDB) => {
-        if (!checkEmailOnDB) {
+        if (checkEmailOnDB == null) {
           CreateAccount()
         } else {
           return response.status(200).json('EmailAlreadyExist')
@@ -29,13 +32,13 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     return response.status(200).json('VerifyDataError')
   }
 
-  async function CreateAccount() {
-    const hash = await bcrypt.hashSync(pass, 10)
+  async function CreateAccount(): Promise<void> {
+    const hash = bcrypt.hashSync(pass, 10)
     await prisma.user
       .create({
         data: {
-          name: name,
-          email: email,
+          name,
+          email,
           pass: hash,
           token: uuid(),
         },
@@ -48,19 +51,19 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       })
   }
 
-  function VerifyData() {
+  function VerifyData(): boolean {
     // name, email, pass, samepass, email == ReGex, name == onlyLetters, pass == samepass
-    let ReGexEmail =
+    const ReGexEmail =
       /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/
-    let ReGexName = /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{3,30}$/
+    const ReGexName = /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{3,30}$/
     if (
-      name &&
-      email &&
-      pass &&
-      samepass &&
-      ReGexEmail.test(email) == true &&
-      ReGexName.test(name) == true &&
-      pass == samepass
+      name !== null &&
+      email !== null &&
+      pass !== null &&
+      samepass !== null &&
+      ReGexEmail.test(email) &&
+      ReGexName.test(name) &&
+      pass === samepass
     ) {
       return true
     } else {

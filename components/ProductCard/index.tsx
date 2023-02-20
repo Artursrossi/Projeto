@@ -1,3 +1,4 @@
+import React from 'react'
 import styles from './styles.module.css'
 
 import { Button } from '../Button'
@@ -10,17 +11,17 @@ interface productData {
 
 interface props {
   product: productData
-  addProduct: Function
-  removeProduct: Function
+  addProduct?: Function
+  removeProduct?: Function
   withButton: boolean
 }
 
-export const ProductCard = (props: props) => {
-  function handleAdd() {
-    props.addProduct(props.product.id)
+export const ProductCard = (props: props): JSX.Element => {
+  function handleAdd(): void {
+    props.addProduct?.(props.product.id)
   }
-  function handleRemove() {
-    props.removeProduct(props.product.id)
+  function handleRemove(): void {
+    props.removeProduct?.(props.product.id)
   }
 
   return (

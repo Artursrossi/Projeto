@@ -4,26 +4,21 @@ interface props {
   validatePass: boolean
   validateSamePass: boolean
   validateLink: boolean
-  name: any
+  name: string
   email: string
   pass: string
   samepass: string
   link: string
 }
 
-export const VerifyInputs = (props: props) => {
+export const VerifyInputs = (props: props): boolean => {
   // Document Elements
-  let formNameErrorID = document.getElementById('formNameError') as HTMLElement
-  let formEmailErrorID = document.getElementById(
-    'formEmailError'
-  ) as HTMLElement
-  let formPassErrorID = document.getElementById('formPassError') as HTMLElement
-  let formSamePassErrorID = document.getElementById(
-    'formSamePassError'
-  ) as HTMLElement
-  let createLinkErrorID = document.getElementById(
-    'createLinkError'
-  ) as HTMLElement
+  const formNameErrorID: HTMLElement | null =
+    document.getElementById('formNameError')
+  const formEmailErrorID = document.getElementById('formEmailError')
+  const formPassErrorID = document.getElementById('formPassError')
+  const formSamePassErrorID = document.getElementById('formSamePassError')
+  const createLinkErrorID = document.getElementById('createLinkError')
 
   // vars
   let validName = false
@@ -33,115 +28,153 @@ export const VerifyInputs = (props: props) => {
   let validLink = false
 
   // Verify Name
-  let ReGexName = /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{3,30}$/
-  if (props.validateName === true) {
-    if (props.name) {
+  const ReGexName = /^[a-zA-ZzáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{3,30}$/
+  if (props.validateName) {
+    if (props.name != null) {
       if (props.name.length >= 3 && props.name.length <= 30) {
-        if (ReGexName.test(props.name) === true) {
-          formNameErrorID.innerHTML = ''
+        if (ReGexName.test(props.name)) {
           validName = true
+          if (formNameErrorID != null) {
+            formNameErrorID.innerHTML = ''
+          }
         } else {
-          formNameErrorID.innerHTML = 'Não pode conter números no nome'
           validName = false
+          if (formNameErrorID != null) {
+            formNameErrorID.innerHTML =
+              'Não pode conter números ou caracteres especiais'
+          }
         }
       } else {
-        formNameErrorID.innerHTML = 'O seu nome deve conter entre 3 a 30 letras'
         validName = false
+        if (formNameErrorID != null) {
+          formNameErrorID.innerHTML =
+            'O seu nome deve conter entre 3 a 30 letras'
+        }
       }
     } else {
-      formNameErrorID.innerHTML = 'Nome Obrigatório'
       validName = false
+      if (formNameErrorID != null) {
+        formNameErrorID.innerHTML = 'Nome Obrigatório'
+      }
     }
   } else {
     validName = true
   }
 
   // Verify Email
-  let ReGexEmail =
+  const ReGexEmail =
     /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/
-  if (props.validateEmail === true) {
-    if (props.email) {
-      if (ReGexEmail.test(props.email) === true) {
-        formEmailErrorID.innerHTML = ''
+  if (props.validateEmail) {
+    if (props.email != null) {
+      if (ReGexEmail.test(props.email)) {
         validEmail = true
+        if (formEmailErrorID != null) {
+          formEmailErrorID.innerHTML = ''
+        }
       } else {
-        formEmailErrorID.innerHTML = 'Email Inválido'
         validEmail = false
+        if (formEmailErrorID != null) {
+          formEmailErrorID.innerHTML = 'Email Inválido'
+        }
       }
     } else {
-      formEmailErrorID.innerHTML = 'Email Obrigatório'
       validEmail = false
+      if (formEmailErrorID != null) {
+        formEmailErrorID.innerHTML = 'Email Obrigatório'
+      }
     }
   } else {
     validEmail = true
   }
 
   // Verify Pass
-  let ReGexStrongerPass = /^(?=.*[0-9])[a-zA-Z0-9!@#$%^&*]{8,30}$/
-  if (props.validatePass === true) {
-    if (props.pass) {
+  const ReGexStrongerPass = /^(?=.*[0-9])[a-zA-Z0-9!@#$%^&*]{8,30}$/
+  if (props.validatePass) {
+    if (props.pass != null) {
       if (props.pass.length >= 8 && props.pass.length <= 30) {
-        if (ReGexStrongerPass.test(props.pass) === true) {
-          formPassErrorID.innerHTML = ''
+        if (ReGexStrongerPass.test(props.pass)) {
           validPass = true
+          if (formPassErrorID != null) {
+            formPassErrorID.innerHTML = ''
+          }
         } else {
-          formPassErrorID.innerHTML =
-            'A sua senha deve conter pelo menos um número'
           validPass = false
+          if (formPassErrorID != null) {
+            formPassErrorID.innerHTML =
+              'A sua senha deve conter pelo menos um número'
+          }
         }
       } else {
-        formPassErrorID.innerHTML =
-          'A sua senha deve conter entre 8 a 30 digitos'
         validPass = false
+        if (formPassErrorID != null) {
+          formPassErrorID.innerHTML =
+            'A sua senha deve conter entre 8 a 30 digitos'
+        }
       }
     } else {
-      formPassErrorID.innerHTML = 'Senha Obrigatória'
       validPass = false
+      if (formPassErrorID != null) {
+        formPassErrorID.innerHTML = 'Senha Obrigatória'
+      }
     }
   } else {
     validPass = true
   }
 
   // Verify SamePass
-  if (props.validateSamePass === true) {
-    if (props.samepass) {
-      if (props.pass == props.samepass) {
-        formSamePassErrorID.innerHTML = ''
+  if (props.validateSamePass) {
+    if (props.samepass != null) {
+      if (props.pass === props.samepass) {
         validSamePass = true
+        if (formSamePassErrorID != null) {
+          formSamePassErrorID.innerHTML = ''
+        }
       } else {
-        formSamePassErrorID.innerHTML = 'As Senhas devem ser iguais'
         validSamePass = false
+        if (formSamePassErrorID != null) {
+          formSamePassErrorID.innerHTML = 'As Senhas devem ser iguais'
+        }
       }
     } else {
-      formSamePassErrorID.innerHTML = 'Digite Sua Senha Novamente'
       validSamePass = false
+      if (formSamePassErrorID != null) {
+        formSamePassErrorID.innerHTML = 'Digite Sua Senha Novamente'
+      }
     }
   } else {
     validSamePass = true
   }
 
   // Verify Link
-  let ReGexLink = /^[A-Za-z]{3,20}$/
-  if (props.validateLink === true) {
-    if (props.link) {
+  const ReGexLink = /^[A-Za-z]{3,20}$/
+  if (props.validateLink) {
+    if (props.link != null) {
       if (props.link.length >= 3 && props.link.length <= 20) {
-        if (ReGexLink.test(props.link) === true) {
-          createLinkErrorID.innerHTML = ''
+        if (ReGexLink.test(props.link)) {
           validLink = true
+          if (createLinkErrorID != null) {
+            createLinkErrorID.innerHTML = ''
+          }
         } else {
-          createLinkErrorID.innerHTML =
-            'O Link não pode conter espaço ou caracteres especiais'
           validLink = false
+          if (createLinkErrorID != null) {
+            createLinkErrorID.innerHTML =
+              'O Link não pode conter espaço ou caracteres especiais'
+          }
           location.href = '#divCreateLink'
         }
       } else {
-        createLinkErrorID.innerHTML = 'O Link deve conter entre 3 a 20 letras'
         validLink = false
+        if (createLinkErrorID != null) {
+          createLinkErrorID.innerHTML = 'O Link deve conter entre 3 a 20 letras'
+        }
         location.href = '#divCreateLink'
       }
     } else {
-      createLinkErrorID.innerHTML = 'Link Obrigatório'
       validLink = false
+      if (createLinkErrorID != null) {
+        createLinkErrorID.innerHTML = 'Link Obrigatório'
+      }
       location.href = '#divCreateLink'
     }
   } else {
@@ -149,13 +182,7 @@ export const VerifyInputs = (props: props) => {
   }
 
   // Check all validations
-  if (
-    validName === true &&
-    validEmail === true &&
-    validPass === true &&
-    validSamePass === true &&
-    validLink === true
-  ) {
+  if (validName && validEmail && validPass && validSamePass && validLink) {
     return true
   } else {
     return false

@@ -1,11 +1,11 @@
-import { PrismaClient } from '@prisma/client'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { type NextApiRequest, type NextApiResponse } from 'next'
 
-const prisma = new PrismaClient()
-
-export default async (request: NextApiRequest, response: NextApiResponse) => {
+export default async (
+  request: NextApiRequest,
+  response: NextApiResponse
+): Promise<void> => {
   fetch('https://jsonplaceholder.typicode.com/photos')
-    .then((res) => res.json())
+    .then(async (res) => await res.json())
     .then((data) => {
       return response.status(201).json(data)
     })

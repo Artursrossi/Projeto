@@ -1,5 +1,5 @@
+import React, { useState, type FormEvent } from 'react'
 import Link from 'next/link'
-import React, { useState, FormEvent } from 'react'
 import axios from 'axios'
 import Router from 'next/router'
 import { setCookie } from 'nookies'
@@ -10,13 +10,13 @@ import { AddLoadingAnimation } from '../utils/AddLoadingAnimation'
 import { RemoveLoadingAnimation } from '../utils/RemoveLoadingAnimation'
 import { VerifyInputs } from '../utils/VerifyInputs'
 
-export default function Login() {
+export default function Login(): JSX.Element {
   const [email, setEmail] = useState('')
   const [pass, setPass] = useState('')
 
-  async function handleLogin(event: FormEvent) {
+  async function handleLogin(event: FormEvent): Promise<void> {
     event.preventDefault()
-    let VerifyInputsProps: any = {
+    const VerifyInputsProps: any = {
       validateName: false,
       validateEmail: true,
       validatePass: true,
@@ -25,50 +25,54 @@ export default function Login() {
       email,
       pass,
     }
-    if (VerifyInputs(VerifyInputsProps) === true) {
+    if (VerifyInputs(VerifyInputsProps)) {
       AddLoadingAnimation()
 
-      let formPassErrorID = document.getElementById(
+      const formPassErrorID = document.getElementById(
         'formPassError'
       ) as HTMLElement
-      let formEmailErrorID = document.getElementById(
+      const formEmailErrorID = document.getElementById(
         'formEmailError'
       ) as HTMLElement
 
       await axios
         .post('/api/Login/setToken', { email, pass })
-        .then((res) => {
-          if (res.data == 'InvalidEmail') {
+        .then(async (res) => {
+          if (res.data === 'InvalidEmail') {
             formEmailErrorID.innerHTML = 'Email Incorreto'
             RemoveLoadingAnimation()
-          } else if (res.data == 'InvalidPass') {
+          } else if (res.data === 'InvalidPass') {
             formPassErrorID.innerHTML = 'Senha Incorreta'
             RemoveLoadingAnimation()
-          } else if (res.status == 201) {
+          } else if (res.status === 201) {
             setCookie(undefined, 'token', res.data.token, {
               maxAge: 60 * 60 * 1, // 1 hour
               path: '/',
             })
-            Redirect(res.data.token)
+            await Redirect(res.data.token)
           } else {
             console.log('Ocorreu um erro')
           }
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 
-  async function Redirect(token: string) {
+  async function Redirect(token: string): Promise<void> {
     await axios
       .post('/api/getLinkFromToken', { token })
-      .then((res) => {
-        if (res.status == 201) {
-          Router.push('/users/' + res.data)
+      .then(async (res) => {
+        if (res.status === 201) {
+          await Router.push('/users/' + res.data)
         } else {
-          Router.push('/create-list')
+          await Router.push('/create-list')
         }
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   return (
@@ -77,7 +81,9 @@ export default function Login() {
         <img src="/react.svg" alt="logo" />
         <input
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value)
+          }}
           className="input"
           type="text"
           name="email"
@@ -86,7 +92,9 @@ export default function Login() {
         <span id="formEmailError" />
         <input
           value={pass}
-          onChange={(e) => setPass(e.target.value)}
+          onChange={(e) => {
+            setPass(e.target.value)
+          }}
           className="input"
           type="password"
           name="senha"
@@ -98,7 +106,6 @@ export default function Login() {
           additionalClass=""
           text="ENTRAR"
           type="submit"
-          func={() => {}}
         />
         <div className="formAlreadyAccount">
           Não tem uma conta?

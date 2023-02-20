@@ -1,16 +1,16 @@
-import { PrismaClient } from '@prisma/client'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { type NextApiRequest, type NextApiResponse } from 'next'
 
-const prisma = new PrismaClient()
-
-export default async (request: NextApiRequest, response: NextApiResponse) => {
+export default async (
+  request: NextApiRequest,
+  response: NextApiResponse
+): Promise<void> => {
   const { ArrProducts } = request.body
   const DataProducts: Array<{ id: number; title: string; url: string } | null> =
     []
 
-  function filterSelectedProducts(AllProducts: any) {
-    for (var id of ArrProducts) {
-      let ArrayUnFiltered = AllProducts.filter((item: any) => item.id == id)
+  function filterSelectedProducts(AllProducts: any): void {
+    for (const id of ArrProducts) {
+      const ArrayUnFiltered = AllProducts.filter((item: any) => item.id === id)
       ArrayUnFiltered.forEach((jsonData: any) => {
         DataProducts.push(jsonData)
       })
@@ -20,7 +20,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
 
   if (VerifyData()) {
     fetch('https://jsonplaceholder.typicode.com/photos')
-      .then((res) => res.json())
+      .then(async (res) => await res.json())
       .then((resJSON) => {
         filterSelectedProducts(resJSON)
       })
@@ -31,8 +31,8 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
     return response.status(200).json('VerifyDataError')
   }
 
-  function VerifyData() {
-    if (ArrProducts) {
+  function VerifyData(): boolean {
+    if (ArrProducts !== undefined) {
       return true
     } else {
       return false

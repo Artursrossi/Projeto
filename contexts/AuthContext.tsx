@@ -1,21 +1,11 @@
-import { createContext, useEffect } from 'react'
-import axios from 'axios'
-import { parseCookies } from 'nookies'
+import React, { createContext, useEffect } from 'react'
 
-type AuthContextType = {
-  isAuthenticated: boolean
-}
+export const AuthContext = createContext({})
 
-export const AuthContext = createContext({} as AuthContextType)
-
-export function AuthProvider({ children }: any) {
+export function AuthProvider({ children }: any): JSX.Element {
   const isAuthenticated = false
 
-  useEffect(() => {
-    const { token: token } = parseCookies()
-    if (token) {
-    }
-  }, [])
+  useEffect(() => {}, [])
 
   return (
     <AuthContext.Provider value={{ isAuthenticated }}>

@@ -1,4 +1,4 @@
-import { MouseEventHandler } from 'react'
+import React, { type MouseEventHandler } from 'react'
 
 import styles from './styles.module.css'
 
@@ -6,14 +6,14 @@ interface props {
   text: string
   id: string
   type: 'button' | 'submit' | 'reset' | undefined
-  func: MouseEventHandler<HTMLButtonElement> | undefined
+  func?: MouseEventHandler<HTMLButtonElement> | undefined
   additionalClass: string
 }
 
-export const Button = (props: props) => {
+export const Button = (props: props): JSX.Element => {
   return (
     <>
-      {props.func == undefined ? (
+      {props.func === undefined ? (
         <button
           id={props.id}
           className={props.additionalClass + ' ' + styles.button}
@@ -31,7 +31,7 @@ export const Button = (props: props) => {
           {props.text}
         </button>
       )}
-      {props.id == 'loadingButton' ? (
+      {props.id === 'loadingButton' ? (
         <div
           id="loadingSpinner"
           className={styles.spinner + ' ' + 'displayNone'}
