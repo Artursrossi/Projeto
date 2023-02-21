@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { type GetServerSideProps } from 'next'
 import Router from 'next/router'
 import axios from 'axios'
@@ -65,13 +65,13 @@ export default function CreateList(ProductsInDB: ResponseJSON): JSX.Element {
     }
   }
 
-  function AddSetProductsArray(id: number): void {
-    setProductsArray([...ProductsArray, id])
-  }
+  const AddSetProductsArray = useCallback((id: number) => {
+    setProductsArray((state) => [...state, id])
+  }, [])
 
-  function RemoveSetProductsArray(id: number): void {
-    setProductsArray(ProductsArray.filter((items) => items !== id))
-  }
+  const RemoveSetProductsArray = useCallback((id: number) => {
+    setProductsArray((state) => state.filter((items) => items !== id))
+  }, [])
 
   return (
     <>

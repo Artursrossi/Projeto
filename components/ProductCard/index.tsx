@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { memo } from 'react'
 import styles from './styles.module.css'
+import Image from 'next/image'
 
 import { Button } from '../Button'
 
@@ -16,7 +17,7 @@ interface props {
   withButton: boolean
 }
 
-export const ProductCard = (props: props): JSX.Element => {
+function ProductCardComponent(props: props): JSX.Element {
   function handleAdd(): void {
     props.addProduct?.(props.product.id)
   }
@@ -27,11 +28,13 @@ export const ProductCard = (props: props): JSX.Element => {
   return (
     <div id={'product-' + props.product.id} className={styles.product}>
       <h1 className={styles.productTitle}>{props.product.title}</h1>
-      <img
+      <Image
         className={styles.productImage}
-        alt="imagem"
         src={props.product.url}
-      ></img>
+        alt="imagem"
+        width={160}
+        height={160}
+      />
       {props.withButton ? (
         <>
           <Button
@@ -55,3 +58,5 @@ export const ProductCard = (props: props): JSX.Element => {
     </div>
   )
 }
+
+export const ProductCard = memo(ProductCardComponent)

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 
 import styles from './styles.module.css'
 
@@ -19,7 +19,7 @@ interface props {
   selectedProducts?: number[]
 }
 
-export const ProductList = (props: props): JSX.Element => {
+function ProductListComponent(props: props): JSX.Element {
   const InitialAllProductsQuantity = 16
   const ProductsPerPage = 8
   const [filteredAllProducts, setFilteredAllProducts] = useState(
@@ -62,10 +62,10 @@ export const ProductList = (props: props): JSX.Element => {
     }
   }, [filteredAllProducts])
 
-  function handleAddMore(): void {
-    setProductsInScreen(productsInScreen + ProductsPerPage)
+  const handleAddMore = useCallback(() => {
+    setProductsInScreen((state) => state + ProductsPerPage)
     // UseEffect [productsInScreen]
-  }
+  }, [])
 
   useEffect(() => {
     setFilteredAllProducts(
@@ -75,37 +75,33 @@ export const ProductList = (props: props): JSX.Element => {
     )
   }, [productsInScreen])
 
-  function addProduct(id: number): void {
+  const addProduct = useCallback((id: number) => {
     const productID = document.getElementById('product-' + id) as HTMLElement
-    productID?.classList.add('productSelected')
-
     const buttonAddID = document.getElementById(
       'buttonAdd-' + id
     ) as HTMLElement
     const buttonRemoveID = document.getElementById(
       'buttonRemove-' + id
     ) as HTMLElement
+    productID?.classList.add('productSelected')
     buttonAddID?.classList.add('displayNone')
     buttonRemoveID?.classList.remove('displayNone')
-
     props.AddSetProductsArray?.(id)
-  }
+  }, [])
 
-  function removeProduct(id: number): void {
+  const removeProduct = useCallback((id: number) => {
     const productID = document.getElementById('product-' + id) as HTMLElement
-    productID?.classList.remove('productSelected')
-
     const buttonAddID = document.getElementById(
       'buttonAdd-' + id
     ) as HTMLElement
     const buttonRemoveID = document.getElementById(
       'buttonRemove-' + id
     ) as HTMLElement
+    productID?.classList.remove('productSelected')
     buttonAddID?.classList.remove('displayNone')
     buttonRemoveID?.classList.add('displayNone')
-
     props.RemoveSetProductsArray?.(id)
-  }
+  }, [])
 
   return (
     <>
@@ -146,3 +142,5 @@ export const ProductList = (props: props): JSX.Element => {
     </>
   )
 }
+
+export const ProductList = memo(ProductListComponent)
